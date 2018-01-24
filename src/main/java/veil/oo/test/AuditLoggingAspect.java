@@ -1,0 +1,30 @@
+package veil.oo.test;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
+
+@Aspect
+@Configuration
+public class AuditLoggingAspect {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Before("execution(* veil.oo.test.*.*(..))")
+    public void before(JoinPoint joinPoint){
+        log.info(" before {}", joinPoint);
+    }
+
+
+    @After("execution(* veil.oo.test.*.*(..))")
+    public void after(JoinPoint joinPoint){
+        log.info(" after {}", joinPoint);
+    }
+}
+
+
+
