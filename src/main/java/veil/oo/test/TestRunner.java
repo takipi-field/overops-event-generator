@@ -13,7 +13,6 @@ import java.util.UUID;
 @Component
 public class TestRunner implements ApplicationRunner {
 
-    public static final int RUNS = 100;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private BrokenService brokenService;
@@ -25,6 +24,9 @@ public class TestRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
+
+        int runs = -1;
+
         long counter = 0;
 
         log.debug("sleeping");
@@ -39,9 +41,9 @@ public class TestRunner implements ApplicationRunner {
 
         long blowupCounter = 0;
 
-        while (counter < RUNS) {
+        while (runs == -1 || counter < runs) {
 
-            log.debug("************** starting run {} out of {}", counter, RUNS);
+            log.debug("************** starting run {} out of {}", counter, runs);
 
             String uuid = UUID.randomUUID().toString();
 
@@ -73,6 +75,16 @@ public class TestRunner implements ApplicationRunner {
             counter++;
         }
 
-        log.debug("app blew up {} times!", blowupCounter);
+        log.info("app blew up {} times!", blowupCounter);
+
+        log.debug("back to sleep");
+
+        try {
+            Thread.sleep(300000);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        log.debug("bye bye");
     }
 }
