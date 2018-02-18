@@ -22,10 +22,10 @@ public class BrokenService {
     public String doBadStuff(long counter, String uuid) throws BadStuffHappened {
 
         log.trace("uuid {" + uuid + "} - creating HttpGet");
-        HttpGet httpGet = new HttpGet("http://wwww.google.com");
+        HttpGet httpGet = new HttpGet("http://jdbc-binary.hdp.local:8080");
 
 
-        String result = null;
+        String result;
 
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(httpGet)) {
@@ -34,13 +34,6 @@ public class BrokenService {
 
             HttpEntity entity = response.getEntity();
 
-
-            if (counter != 0 && counter % 5 == 0) {
-                log.debug("uuid {" + uuid + "} - about to generate a null pointer for fun!");
-                result.equals("test");
-            }
-
-
             try (InputStream content = entity.getContent();
                  Scanner scanner = new Scanner(content).useDelimiter("\\A")) {
 
@@ -48,6 +41,13 @@ public class BrokenService {
 
                 log.debug("uuid {" + uuid + "} - response content as string: [" + result + "]");
             }
+
+
+            if (counter != 0 && counter % 5 == 0) {
+                log.warn("uuid {" + uuid + "} - about to generate a null pointer for fun!");
+                throw new NullPointerException();
+            }
+
 
             return result;
         } catch (IOException io) {
