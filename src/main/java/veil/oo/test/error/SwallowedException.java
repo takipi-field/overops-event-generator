@@ -1,4 +1,4 @@
-package veil.oo.test;
+package veil.oo.test.error;
 
 public class SwallowedException extends RuntimeException {
 

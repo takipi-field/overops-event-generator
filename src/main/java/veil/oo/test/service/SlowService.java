@@ -1,0 +1,28 @@
+package veil.oo.test.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import veil.oo.test.domain.User;
+
+@Service
+public class SlowService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    public void longRunningMethod(User demoUser, boolean generateEvent) {
+
+        log.trace("user details: {}", demoUser.toString());
+
+        if (generateEvent) {
+            log.info("i'm concerned this method could take too long to execute...");
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+    }
+
+}
