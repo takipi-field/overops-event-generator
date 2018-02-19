@@ -16,13 +16,13 @@ public class AuditLoggingAspect {
 
     @Before("execution(* veil.oo.test.*.*(..))")
     public void before(JoinPoint joinPoint){
-        log.info(" before {}", joinPoint);
+        log.debug(" before {}", joinPoint);
     }
 
 
     @After("execution(* veil.oo.test.*.*(..))")
     public void after(JoinPoint joinPoint){
-        log.info(" after {}", joinPoint);
+        log.debug(" after {}", joinPoint);
     }
 }
 

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -15,11 +14,14 @@ public class TestRunner implements ApplicationRunner {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private BrokenService brokenService;
+    public static final int STARTUP_SLEEP = 20000;
+    public static final int SHUTDOWN_SLEEP = 300000;
+
+    private ExampleService exampleService;
 
     @Autowired
-    public TestRunner(BrokenService brokenService) {
-        this.brokenService = brokenService;
+    public TestRunner(ExampleService exampleService) {
+        this.exampleService = exampleService;
     }
 
     @Override
@@ -29,17 +31,17 @@ public class TestRunner implements ApplicationRunner {
 
         long counter = 0;
 
-        log.debug("sleeping");
+        log.debug("sleeping for {} ms before starting", STARTUP_SLEEP);
 
         try {
-            Thread.sleep(20000);
+            Thread.sleep(STARTUP_SLEEP);
         } catch (InterruptedException e) {
             log.error(e.getMessage(), e);
         }
 
-        log.debug("waking up");
+        log.debug("waking up and ready to demo");
 
-        long blowupCounter = 0;
+        long exceptionCounter = 0;
 
         while (runs == -1 || counter < runs) {
 
@@ -48,21 +50,11 @@ public class TestRunner implements ApplicationRunner {
             String uuid = UUID.randomUUID().toString();
 
             try {
-                brokenService.doBadStuff(counter, uuid);
-            } catch (BadStuffHappened badStuffHappened) {
-                log.error(badStuffHappened.getMessage(), badStuffHappened);
+                exampleService.fetch(counter, uuid);
             } catch (Exception e) {
+                exceptionCounter++;
 
-                blowupCounter++;
-
-                log.debug("this is blowup {}", blowupCounter);
-
-                // tiny links will always print because this is logged thru a framework
-                log.error("uuid {" + uuid + "} - something happened i wasn't expecting ;)...", e);
-
-                // tiny links will only be printed if "-Dtakipi.etl" is set at JVM startup or its set in the gui (under installation keys)
-                //e.printStackTrace();
-                //System.out.println(e.getMessage());
+                log.error("caught and logged this exception: " + e.getMessage(), e);
             }
 
 
@@ -75,12 +67,12 @@ public class TestRunner implements ApplicationRunner {
             counter++;
         }
 
-        log.info("app blew up {} times!", blowupCounter);
+        log.info("test generated {} exceptions!", exceptionCounter);
 
-        log.debug("back to sleep");
+        log.debug("sleeping for {} ms before exiting", SHUTDOWN_SLEEP);
 
         try {
-            Thread.sleep(300000);
+            Thread.sleep(SHUTDOWN_SLEEP);
         } catch (InterruptedException e) {
             log.error(e.getMessage(), e);
         }
