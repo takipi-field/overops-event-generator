@@ -67,8 +67,6 @@ public class TestRunner implements ApplicationRunner {
                 exampleService.fetch(counter, uuid, demoUser);
             } catch (Exception e) {
                 exceptionCounter++;
-
-                log.error("caught and logged this exception: " + e.getMessage(), e);
             }
 
 

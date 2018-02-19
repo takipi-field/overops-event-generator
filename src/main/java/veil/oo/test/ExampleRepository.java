@@ -19,7 +19,7 @@ public class ExampleRepository {
 
     private Random rand = new Random();
 
-    private static final List<Integer> GIVEN_LIST = Arrays.asList(1, 2, 3, 4, 5);
+    private static final List<Integer> GIVEN_LIST = Arrays.asList(1, 2, 3, 4, 5, 6);
 
     private static Takipi takipi = Takipi.create("example instance");
 
@@ -51,10 +51,10 @@ public class ExampleRepository {
                 try {
 
                     if (number != 3) {
-                        throw new IllegalArgumentException("2 does not equal 3 - this was buried");
+                        throw new SwallowedException("2 does not equal 3 - this was buried");
                     }
 
-                } catch (IllegalArgumentException e) {
+                } catch (SwallowedException e) {
                     // i'll just bury this one
                 }
 
@@ -62,7 +62,7 @@ public class ExampleRepository {
 
 
                 if (number != 4) {
-                    log.warn("this number is not what i thought it would be and so was logged");
+                    log.warn("warning!!!! - this number is not what i thought it would be and so was logged");
                 }
 
             } else if (number == 4) {
@@ -82,6 +82,18 @@ public class ExampleRepository {
                 log.debug("firing custom event because this an important point in my code");
 
                 customEvent.fire();
+
+            } else if (number == 6) {
+
+                try {
+
+                    if (true) {
+                        throw new IllegalArgumentException("fairly standard catch and log; not very helpful");
+                    }
+
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
             }
 
         } else {
