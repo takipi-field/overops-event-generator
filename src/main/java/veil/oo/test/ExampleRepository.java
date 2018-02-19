@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 @Component
@@ -17,7 +15,6 @@ public class ExampleRepository {
 
     private Random rand = new Random();
 
-    private static final List<Integer> GIVEN_LIST = Arrays.asList(1, 2, 3, 4, 5, 6);
 
     private static Takipi takipi = Takipi.create("example instance");
 
@@ -28,21 +25,15 @@ public class ExampleRepository {
 
         if (generateException) {
 
-            int number = GIVEN_LIST.get(rand.nextInt(GIVEN_LIST.size()));
+            int number = rand.nextInt(6) + 1;
 
-            log.debug("number is {}", number);
+            log.debug("random number is {}", number);
 
             if (number == 1) {
 
                 // testing a basic error condition
 
-                String test = "foo";
-
-                if (test != null) {
-                    test = null;
-                }
-
-                test.equals("bar");
+                throw new NullPointerException("a value i thought was not null, was.  ouch.");
 
             } else if (number == 2) {
 
@@ -57,7 +48,6 @@ public class ExampleRepository {
                 }
 
             } else if (number == 3) {
-
 
                 if (number != 4) {
                     log.warn("warning!!!! - this number is not what i thought it would be and so was logged");
@@ -92,6 +82,8 @@ public class ExampleRepository {
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
                 }
+            } else {
+                log.warn("got an unexpected number {}", number);
             }
 
         } else {
