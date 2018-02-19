@@ -1,4 +1,4 @@
-package veil.oo.test;
+package veil.oo.test.domain;
 
 import java.util.Date;
 

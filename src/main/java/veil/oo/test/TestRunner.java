@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import veil.oo.test.domain.User;
+import veil.oo.test.controller.Controller;
 
 import java.util.Date;
 import java.util.UUID;
@@ -16,19 +18,16 @@ public class TestRunner implements ApplicationRunner {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public static final int STARTUP_SLEEP = 20000;
-    public static final int SHUTDOWN_SLEEP = 300000;
 
-    private ExampleService exampleService;
+    private Controller controller;
 
     @Autowired
-    public TestRunner(ExampleService exampleService) {
-        this.exampleService = exampleService;
+    public TestRunner(Controller controller) {
+        this.controller = controller;
     }
 
     @Override
-    public void run(ApplicationArguments applicationArguments) throws Exception {
-
-        int runs = -1;
+    public void run(ApplicationArguments applicationArguments) {
 
         long counter = 0;
 
@@ -41,8 +40,6 @@ public class TestRunner implements ApplicationRunner {
         }
 
         log.debug("waking up and ready to demo");
-
-        long exceptionCounter = 0;
 
         User demoUser = new User();
         demoUser.setId(999999);
@@ -57,21 +54,20 @@ public class TestRunner implements ApplicationRunner {
         demoUser.setLastLogin(new Date());
 
 
-        while (runs == -1 || counter < runs) {
+        while (true) {
 
-            log.info("************** starting run {} out of {}", counter, runs);
+            log.info("************** starting run {}", counter);
 
             String uuid = UUID.randomUUID().toString();
 
             try {
-                exampleService.fetch(counter, uuid, demoUser);
+                controller.route(counter, uuid, demoUser);
             } catch (Exception e) {
-                exceptionCounter++;
+                log.error(e.getMessage(),e);
             }
 
-
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 log.error(e.getMessage(), e);
             }
@@ -79,16 +75,6 @@ public class TestRunner implements ApplicationRunner {
             counter++;
         }
 
-        log.info("test generated {} exceptions!", exceptionCounter);
 
-        log.debug("sleeping for {} ms before exiting", SHUTDOWN_SLEEP);
-
-        try {
-            Thread.sleep(SHUTDOWN_SLEEP);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        log.debug("bye bye");
     }
 }

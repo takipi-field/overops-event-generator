@@ -1,4 +1,4 @@
-package veil.oo.test;
+package veil.oo.test.utils;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -14,13 +14,13 @@ public class AuditLoggingAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Before("execution(* veil.oo.test.*.*(..))")
+    @Before("execution(* veil.oo.test.service.*.*(..))")
     public void before(JoinPoint joinPoint){
         log.debug(" before {}", joinPoint);
     }
 
 
-    @After("execution(* veil.oo.test.*.*(..))")
+    @After("execution(* veil.oo.test.service.*.*(..))")
     public void after(JoinPoint joinPoint){
         log.debug(" after {}", joinPoint);
     }
