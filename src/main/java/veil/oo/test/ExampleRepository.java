@@ -24,7 +24,9 @@ public class ExampleRepository {
     private static Takipi takipi = Takipi.create("example instance");
 
 
-    public void getData(boolean generateException) {
+    public void getData(boolean generateException, User demoUser) {
+
+        log.info("fetching info for user: {}", demoUser);
 
         if (generateException) {
 

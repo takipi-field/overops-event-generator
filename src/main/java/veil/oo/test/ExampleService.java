@@ -14,7 +14,7 @@ public class ExampleService {
     private ExampleRepository generator;
 
 
-    public void fetch(long counter, String uuid){
+    public void fetch(long counter, String uuid, User demoUser){
 
         log.trace("uuid [{}] - counter is {}", uuid, counter);
 
@@ -25,7 +25,7 @@ public class ExampleService {
 
         }
 
-        generator.getData(generateException);
+        generator.getData(generateException, demoUser);
     }
 
 }
