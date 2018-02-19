@@ -105,4 +105,13 @@ public class User {
     public void setSensitiveNote(String sensitiveNote) {
         this.sensitiveNote = sensitiveNote;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

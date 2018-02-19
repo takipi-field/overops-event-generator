@@ -10,8 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static sun.java2d.loops.SurfaceType.Custom;
-
 @Component
 public class ExampleRepository {
 
@@ -26,7 +24,7 @@ public class ExampleRepository {
 
     public void getData(boolean generateException, User demoUser) {
 
-        log.info("fetching info for user: {}", demoUser);
+        log.info("fetching info for user: {}", demoUser.toString());
 
         if (generateException) {
 
@@ -67,7 +65,7 @@ public class ExampleRepository {
 
             } else if (number == 4) {
 
-                log.debug("i'm concerned this method could take too long to execute");
+                log.info("i'm concerned this method could take too long to execute when number = {}", number);
 
                 try {
                     Thread.sleep(5000);
@@ -77,9 +75,9 @@ public class ExampleRepository {
 
             } else if (number == 5) {
 
-                TakipiEvent customEvent = takipi.events().createEvent("My Custom Event");
+                TakipiEvent customEvent = takipi.events().createEvent("Important Custom Event");
 
-                log.debug("firing custom event because this an important point in my code");
+                log.info("firing custom event because this an important point in my code");
 
                 customEvent.fire();
 
@@ -97,7 +95,7 @@ public class ExampleRepository {
             }
 
         } else {
-            log.debug("method finished successfully");
+            log.info("successfully fetched info for user: {}", demoUser.toString());
         }
 
     }

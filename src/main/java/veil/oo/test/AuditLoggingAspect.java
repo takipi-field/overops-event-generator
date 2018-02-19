@@ -24,6 +24,7 @@ public class AuditLoggingAspect {
     public void after(JoinPoint joinPoint){
         log.debug(" after {}", joinPoint);
     }
+
 }
 
 

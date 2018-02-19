@@ -59,7 +59,7 @@ public class TestRunner implements ApplicationRunner {
 
         while (runs == -1 || counter < runs) {
 
-            log.debug("************** starting run {} out of {}", counter, runs);
+            log.info("************** starting run {} out of {}", counter, runs);
 
             String uuid = UUID.randomUUID().toString();
 
