@@ -74,7 +74,5 @@ public class TestRunner implements ApplicationRunner {
 
             counter++;
         }
-
-
     }
 }
