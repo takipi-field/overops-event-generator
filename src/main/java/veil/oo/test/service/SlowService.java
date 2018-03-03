@@ -17,6 +17,14 @@ public class SlowService {
         if (generateEvent) {
             log.info("i'm concerned this method could take too long to execute...");
 
+             /*
+
+                Timer Scenario:
+
+                OverOps can be configured to capture events when method duration exceeds a user defined threshold
+
+             */
+
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import veil.oo.test.domain.User;
+import veil.oo.test.error.BusinessException;
 import veil.oo.test.service.*;
 
 import java.util.Random;
@@ -45,7 +46,7 @@ public class Controller {
         this.uncaughtExceptionService = uncaughtExceptionService;
     }
 
-    public void route(long counter, String uuid, User demoUser) {
+    public void route(long counter, String uuid, User demoUser) throws BusinessException {
 
         log.trace("uuid [{}] - counter is {}", uuid, counter);
 

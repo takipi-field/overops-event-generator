@@ -17,6 +17,16 @@ public class CatchAndLogService {
         if (generateEvent) {
             try {
 
+
+            /*
+
+                Catch and Log Scenario:
+
+                An exception caught and logged.  This would appear in most logging tools but depending on the quality
+                of logging important details may be missing.
+
+             */
+
                 throw new IllegalArgumentException("fairly standard catch and log; not very helpful");
 
             } catch (Exception e) {
