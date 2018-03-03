@@ -12,7 +12,7 @@ public class CustomEventService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private static Takipi takipi = Takipi.create("CUSTOM_EVENT_SERVICE");
+    private static final Takipi takipi = Takipi.create("CUSTOM_EVENT_SERVICE");
 
 
     public void fireCustomEvent(User demoUser, boolean generateEvent) {
