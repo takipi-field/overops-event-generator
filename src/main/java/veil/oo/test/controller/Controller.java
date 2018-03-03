@@ -14,29 +14,33 @@ public class Controller {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private Random rand = new Random();
+    private final Random rand = new Random();
+
+    private final BubbleService bubbleService;
+
+    private final CatchAndIgnoreService catchAndIgnoreService;
+
+    private final CatchAnLogService catchAnLogService;
+
+    private final CustomEventService customEventService;
+
+    private final SlowService slowService;
+
+    private final WarningService warningService;
+
+    private final VeryBrokenService veryBrokenService;
+
 
     @Autowired
-    private BubbleService bubbleService;
-
-    @Autowired
-    private CatchAndIgnoreService catchAndIgnoreService;
-
-    @Autowired
-    private CatchAnLogService catchAnLogService;
-
-    @Autowired
-    private CustomEventService customEventService;
-
-    @Autowired
-    private SlowService slowService;
-
-    @Autowired
-    private WarningService warningService;
-
-    @Autowired
-    private VeryBrokenService veryBrokenService;
-
+    public Controller(BubbleService bubbleService, CatchAndIgnoreService catchAndIgnoreService, CatchAnLogService catchAnLogService, CustomEventService customEventService, SlowService slowService, WarningService warningService, VeryBrokenService veryBrokenService) {
+        this.bubbleService = bubbleService;
+        this.catchAndIgnoreService = catchAndIgnoreService;
+        this.catchAnLogService = catchAnLogService;
+        this.customEventService = customEventService;
+        this.slowService = slowService;
+        this.warningService = warningService;
+        this.veryBrokenService = veryBrokenService;
+    }
 
     public void route(long counter, String uuid, User demoUser) {
 

@@ -17,9 +17,9 @@ public class TestRunner implements ApplicationRunner {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public static final int STARTUP_SLEEP = 20000;
+    private static final int STARTUP_SLEEP = 20000;
 
-    private Controller controller;
+    private final Controller controller;
 
     @Autowired
     public TestRunner(Controller controller) {
