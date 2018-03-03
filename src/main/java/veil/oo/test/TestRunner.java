@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import veil.oo.test.domain.User;
 import veil.oo.test.controller.Controller;
+import veil.oo.test.domain.User;
 
 import java.util.Date;
 import java.util.UUID;

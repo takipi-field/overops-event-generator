@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import veil.oo.test.domain.User;
 
 @Service
-public class CatchAnLogService {
+public class CatchAndLogService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

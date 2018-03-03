@@ -20,7 +20,7 @@ public class Controller {
 
     private final CatchAndIgnoreService catchAndIgnoreService;
 
-    private final CatchAnLogService catchAnLogService;
+    private final CatchAndLogService catchAndLogService;
 
     private final CustomEventService customEventService;
 
@@ -30,16 +30,19 @@ public class Controller {
 
     private final VeryBrokenService veryBrokenService;
 
+    private final UncaughtExceptionService uncaughtExceptionService;
+
 
     @Autowired
-    public Controller(BubbleService bubbleService, CatchAndIgnoreService catchAndIgnoreService, CatchAnLogService catchAnLogService, CustomEventService customEventService, SlowService slowService, WarningService warningService, VeryBrokenService veryBrokenService) {
+    public Controller(BubbleService bubbleService, CatchAndIgnoreService catchAndIgnoreService, CatchAndLogService catchAndLogService, CustomEventService customEventService, SlowService slowService, WarningService warningService, VeryBrokenService veryBrokenService, UncaughtExceptionService uncaughtExceptionService) {
         this.bubbleService = bubbleService;
         this.catchAndIgnoreService = catchAndIgnoreService;
-        this.catchAnLogService = catchAnLogService;
+        this.catchAndLogService = catchAndLogService;
         this.customEventService = customEventService;
         this.slowService = slowService;
         this.warningService = warningService;
         this.veryBrokenService = veryBrokenService;
+        this.uncaughtExceptionService = uncaughtExceptionService;
     }
 
     public void route(long counter, String uuid, User demoUser) {
@@ -54,7 +57,7 @@ public class Controller {
 
         log.info("fetching info for user: {}", demoUser.toString());
 
-        int scenario = rand.nextInt(6) + 1;
+        int scenario = rand.nextInt(7) + 1;
 
         log.debug("event scenario: {}", scenario);
 
@@ -80,10 +83,16 @@ public class Controller {
 
         } else if (scenario == 6) {
 
-            catchAnLogService.catchAndLog(demoUser, generateEvent);
+            catchAndLogService.catchAndLog(demoUser, generateEvent);
+
+        } else if (scenario == 7) {
+
+            uncaughtExceptionService.cantCatchMe(demoUser, generateEvent);
 
         } else {
+
             log.warn("invalid scenario: {}", scenario);
+
         }
 
         if (counter == 0 || counter % 10 != 0) {
