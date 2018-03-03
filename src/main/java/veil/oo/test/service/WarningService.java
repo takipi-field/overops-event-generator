@@ -15,6 +15,15 @@ public class WarningService {
         log.trace("user details: {}", demoUser.toString());
 
         if (generateEvent) {
+
+             /*
+
+                Warn Scenario:
+
+                OverOps captures detailed snapshots when calls to log.warn are made.
+
+             */
+
             log.warn("warning!!!! - this number is not what i thought it would be and so was logged");
         }
     }

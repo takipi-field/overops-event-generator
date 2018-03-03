@@ -23,6 +23,14 @@ public class UncaughtExceptionService {
 
                 log.debug("about to do something very dangerous and unpredictable.");
 
+                 /*
+
+                Uncaught Exception Scenario:
+
+                This demonstrates what happens when an unexpected and uncaught exception occurs in the code.
+
+                */
+
                 throw new UncaughtException("this exception is uncaught and a BIG potential problem");
             });
         }

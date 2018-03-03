@@ -18,6 +18,16 @@ public class CatchAndIgnoreService {
         if (generateEvent) {
             try {
 
+            /*
+
+                Catch and Ignore Scenario:
+
+                An exception is thrown during the normal course of a method but instead of dealing with the exception,
+                the exception is buried or swallowed.  No logging occurs.  This would be invisible to logging aggregators
+                like Splunk or other monitoring tools.  Usually a sign of poor code.  Can lead to serious issues.
+
+             */
+
                 throw new SwallowedException("Exception occurred but it was never logged, eg. swallowed exception");
 
             } catch (SwallowedException e) {

@@ -20,6 +20,15 @@ public class CustomEventService {
         log.trace("user details: {}", demoUser.toString());
 
         if (generateEvent) {
+
+             /*
+
+                Custom Event Scenario:
+
+                The OverOps SDK allows you to capture meaningful events in your code.
+
+             */
+
             TakipiEvent customEvent = takipi.events().createEvent("Important Custom Event");
 
             log.info("firing custom event because this an important point in my code");
