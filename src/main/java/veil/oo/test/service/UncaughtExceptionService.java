@@ -23,11 +23,11 @@ public class UncaughtExceptionService {
 
                 log.debug("about to do something very dangerous and unpredictable.");
 
-                 /*
+                /*
 
-                Uncaught Exception Scenario:
+                    Uncaught Exception Scenario:
 
-                This demonstrates what happens when an unexpected and uncaught exception occurs in the code.
+                    This demonstrates what happens when an unexpected and uncaught exception occurs in the code.
 
                 */
 

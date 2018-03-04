@@ -23,7 +23,7 @@ public class BubbleService {
 
                 An exception is thrown during the normal course of a method and should be handled by calling code.
 
-             */
+            */
 
             throw new BusinessException("this exception should be handled elsewhere.");
         }

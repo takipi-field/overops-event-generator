@@ -21,7 +21,7 @@ public class CustomEventService {
 
         if (generateEvent) {
 
-             /*
+            /*
 
                 Custom Event Scenario:
 
