@@ -14,7 +14,7 @@ import veil.oo.test.controller.Controller;
 import veil.oo.test.domain.User;
 
 import java.io.File;
-import java.util.Collections;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -42,57 +42,57 @@ public class TestRunner implements ApplicationRunner {
 
         long counter = 0;
 
-        List<User> users = loadUsers(User.class, USERS_CSV);
-
-        int size = users.size();
-
-        log.info("loaded {} users", size);
-
-        log.info("sleeping for {} ms before starting", STARTUP_SLEEP);
-
         try {
-            Thread.sleep(STARTUP_SLEEP);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
-        }
+            List<User> users = loadUsers(User.class, USERS_CSV);
 
-        log.info("waking up and ready to demo");
+            int size = users.size();
 
+            log.info("loaded {} users", size);
 
-        while (true) {
-
-            log.info("************** starting run {}", counter);
-
-            String uuid = UUID.randomUUID().toString();
-
-            User user = users.get(random.nextInt(size));
+            log.info("sleeping for {} ms before starting", STARTUP_SLEEP);
 
             try {
-                controller.route(counter, uuid, user);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-
-            try {
-                Thread.sleep(500);
+                Thread.sleep(STARTUP_SLEEP);
             } catch (InterruptedException e) {
                 log.error(e.getMessage(), e);
             }
 
-            counter++;
+            log.info("waking up and ready to demo");
+
+            while (true) {
+
+                log.info("************** starting run {}", counter);
+
+                String uuid = UUID.randomUUID().toString();
+
+                User user = users.get(random.nextInt(size));
+
+                try {
+                    controller.route(counter, uuid, user);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    log.error(e.getMessage(), e);
+                }
+
+                counter++;
+            }
+
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
-    private <T> List<T> loadUsers(Class<T> type, String fileName) {
-        try {
-            CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
-            CsvMapper mapper = new CsvMapper();
-            File file = new ClassPathResource(fileName).getFile();
-            MappingIterator<T> readValues = mapper.readerFor(type).with(bootstrapSchema).readValues(file);
-            return readValues.readAll();
-        } catch (Exception e) {
-            log.error("Error occurred while loading object list from file " + fileName, e);
-            return Collections.emptyList();
-        }
+    private <T> List<T> loadUsers(Class<T> type, String fileName) throws IOException {
+        CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
+        CsvMapper mapper = new CsvMapper();
+        File file = new ClassPathResource(fileName).getFile();
+        MappingIterator<T> readValues = mapper.readerFor(type).with(bootstrapSchema).readValues(file);
+
+        return readValues.readAll();
     }
 }

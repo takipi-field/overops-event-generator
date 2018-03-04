@@ -14,8 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.9.RELEASE</version>
-        <relativePath/> <!-- lookup parent from service -->
+        <version>2.0.0.RELEASE</version>
     </parent>
 
     <properties>
@@ -36,23 +35,16 @@
             <scope>test</scope>
         </dependency>
 
-<!--        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.4</version>
-        </dependency>-->
-
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-csv</artifactId>
-            <version>2.9.3</version>
+            <version>2.9.4</version>
         </dependency>
-
 
         <dependency>
             <groupId>com.takipi</groupId>
             <artifactId>takipi-sdk</artifactId>
-            <version>LATEST</version>
+            <version>0.2.0</version>
         </dependency>
     </dependencies>
 
