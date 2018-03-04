@@ -17,7 +17,6 @@ public class User {
     private String sensitiveNote;
 
 
-
     public String getFirstName() {
         return firstName;
     }

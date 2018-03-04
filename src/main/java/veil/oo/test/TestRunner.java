@@ -63,7 +63,7 @@ public class TestRunner implements ApplicationRunner {
             try {
                 controller.route(counter, uuid, demoUser);
             } catch (Exception e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
 
             try {

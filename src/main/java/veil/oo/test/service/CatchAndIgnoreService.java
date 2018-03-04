@@ -26,7 +26,7 @@ public class CatchAndIgnoreService {
                 the exception is buried or swallowed.  No logging occurs.  This would be invisible to logging aggregators
                 like Splunk or other monitoring tools.  Usually a sign of poor code.  Can lead to serious issues.
 
-             */
+            */
 
                 throw new SwallowedException("Exception occurred but it was never logged, eg. swallowed exception");
 
