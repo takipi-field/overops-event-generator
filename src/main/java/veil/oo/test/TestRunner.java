@@ -1,15 +1,22 @@
 package veil.oo.test;
 
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import veil.oo.test.controller.Controller;
 import veil.oo.test.domain.User;
 
-import java.util.Date;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Component
@@ -17,9 +24,13 @@ public class TestRunner implements ApplicationRunner {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    private static final String USERS_CSV = "users.csv";
+
     private static final int STARTUP_SLEEP = 20000;
 
     private final Controller controller;
+
+    private final Random random = new Random();
 
     @Autowired
     public TestRunner(Controller controller) {
@@ -31,7 +42,13 @@ public class TestRunner implements ApplicationRunner {
 
         long counter = 0;
 
-        log.debug("sleeping for {} ms before starting", STARTUP_SLEEP);
+        List<User> users = loadUsers(User.class, USERS_CSV);
+
+        int size = users.size();
+
+        log.info("loaded {} users", size);
+
+        log.info("sleeping for {} ms before starting", STARTUP_SLEEP);
 
         try {
             Thread.sleep(STARTUP_SLEEP);
@@ -39,19 +56,7 @@ public class TestRunner implements ApplicationRunner {
             log.error(e.getMessage(), e);
         }
 
-        log.debug("waking up and ready to demo");
-
-        User demoUser = new User();
-        demoUser.setId(999999);
-        demoUser.setFirstName("Tim");
-        demoUser.setLastName("Veil");
-        demoUser.setEmailAddress("tim.veil@overops.com");
-        demoUser.setNote("interesting facts about tim...");
-        demoUser.setSensitiveNote("here are some details i'd rather not share");
-        demoUser.setSsn("111-22-3333");
-        demoUser.setSocSecNum("111-22-3333");
-        demoUser.setPassword("p@ssw0rd");
-        demoUser.setLastLogin(new Date());
+        log.info("waking up and ready to demo");
 
 
         while (true) {
@@ -60,8 +65,10 @@ public class TestRunner implements ApplicationRunner {
 
             String uuid = UUID.randomUUID().toString();
 
+            User user = users.get(random.nextInt(size));
+
             try {
-                controller.route(counter, uuid, demoUser);
+                controller.route(counter, uuid, user);
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
@@ -73,6 +80,19 @@ public class TestRunner implements ApplicationRunner {
             }
 
             counter++;
+        }
+    }
+
+    private <T> List<T> loadUsers(Class<T> type, String fileName) {
+        try {
+            CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
+            CsvMapper mapper = new CsvMapper();
+            File file = new ClassPathResource(fileName).getFile();
+            MappingIterator<T> readValues = mapper.readerFor(type).with(bootstrapSchema).readValues(file);
+            return readValues.readAll();
+        } catch (Exception e) {
+            log.error("Error occurred while loading object list from file " + fileName, e);
+            return Collections.emptyList();
         }
     }
 }
