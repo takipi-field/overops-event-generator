@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import veil.oo.test.controller.Controller;
 import veil.oo.test.domain.User;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -24,7 +24,7 @@ public class TestRunner implements ApplicationRunner {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private static final String USERS_CSV = "users.csv";
+    private static final String USERS_CSV = "/users.csv";
 
     private static final int STARTUP_SLEEP = 20000;
 
@@ -90,9 +90,9 @@ public class TestRunner implements ApplicationRunner {
     private <T> List<T> loadUsers(Class<T> type, String fileName) throws IOException {
         CsvSchema bootstrapSchema = CsvSchema.emptySchema().withHeader();
         CsvMapper mapper = new CsvMapper();
-        File file = new ClassPathResource(fileName).getFile();
-        MappingIterator<T> readValues = mapper.readerFor(type).with(bootstrapSchema).readValues(file);
-
-        return readValues.readAll();
+        try (InputStream file = new ClassPathResource(fileName, this.getClass()).getInputStream()) {
+            MappingIterator<T> readValues = mapper.readerFor(type).with(bootstrapSchema).readValues(file);
+            return readValues.readAll();
+        }
     }
 }
