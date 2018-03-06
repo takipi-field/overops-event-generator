@@ -33,9 +33,11 @@ public class Controller {
 
     private final UncaughtExceptionService uncaughtExceptionService;
 
+    private final HttpService httpService;
+
 
     @Autowired
-    public Controller(BubbleService bubbleService, CatchAndIgnoreService catchAndIgnoreService, CatchAndLogService catchAndLogService, CustomEventService customEventService, SlowService slowService, WarningService warningService, VeryBrokenService veryBrokenService, UncaughtExceptionService uncaughtExceptionService) {
+    public Controller(BubbleService bubbleService, CatchAndIgnoreService catchAndIgnoreService, CatchAndLogService catchAndLogService, CustomEventService customEventService, SlowService slowService, WarningService warningService, VeryBrokenService veryBrokenService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService) {
         this.bubbleService = bubbleService;
         this.catchAndIgnoreService = catchAndIgnoreService;
         this.catchAndLogService = catchAndLogService;
@@ -44,6 +46,7 @@ public class Controller {
         this.warningService = warningService;
         this.veryBrokenService = veryBrokenService;
         this.uncaughtExceptionService = uncaughtExceptionService;
+        this.httpService = httpService;
     }
 
     public void route(long counter, String uuid, User demoUser) throws BusinessException {
@@ -58,7 +61,7 @@ public class Controller {
 
         log.info("fetching info for user: {}", demoUser.toString());
 
-        int scenario = rand.nextInt(7) + 1;
+        int scenario = rand.nextInt(9) + 1;
 
         log.debug("event scenario: {}", scenario);
 
@@ -89,6 +92,14 @@ public class Controller {
         } else if (scenario == 7) {
 
             uncaughtExceptionService.cantCatchMe(demoUser, generateEvent);
+
+        } else if (scenario == 8) {
+
+            httpService.throw500(demoUser, generateEvent);
+
+        } else if (scenario == 9) {
+
+            httpService.throw404(demoUser, generateEvent);
 
         } else {
 
