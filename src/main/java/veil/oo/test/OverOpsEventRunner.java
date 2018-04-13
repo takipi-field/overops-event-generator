@@ -20,7 +20,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Component
-public class TestRunner implements ApplicationRunner {
+public class OverOpsEventRunner implements ApplicationRunner {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -33,7 +33,7 @@ public class TestRunner implements ApplicationRunner {
     private final Random random = new Random();
 
     @Autowired
-    public TestRunner(Controller controller) {
+    public OverOpsEventRunner(Controller controller) {
         this.controller = controller;
     }
 

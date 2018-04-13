@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>veil.oo</groupId>
-    <artifactId>overops-demo</artifactId>
+    <artifactId>overops-event-generator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>OverOps Demo</name>
+    <name>OverOps Event Generator</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

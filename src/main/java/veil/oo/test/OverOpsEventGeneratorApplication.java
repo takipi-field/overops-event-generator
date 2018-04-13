@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringAspectTestApplication {
+public class OverOpsEventGeneratorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringAspectTestApplication.class, args);
+        SpringApplication.run(OverOpsEventGeneratorApplication.class, args);
     }
 }
