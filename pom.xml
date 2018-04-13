@@ -4,12 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>veil.oo</groupId>
-    <artifactId>spring-aspect-test</artifactId>
+    <artifactId>overops-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>spring-aspect-test</name>
-    <description>Demo project for Spring Boot</description>
+    <name>OverOps Demo</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
