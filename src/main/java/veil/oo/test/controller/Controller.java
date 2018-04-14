@@ -49,9 +49,11 @@ public class Controller {
         this.httpService = httpService;
     }
 
-    public void route(long counter, String uuid, User demoUser) throws BusinessException {
+    public void route(long counter, User user) throws BusinessException {
 
-        log.trace("uuid [{}] - counter is {}", uuid, counter);
+        log.trace("counter is {}", counter);
+
+        log.info("user is {}", user.toString());
 
         boolean generateEvent = false;
 
@@ -59,57 +61,57 @@ public class Controller {
             generateEvent = true;
         }
 
-        log.info("fetching info for user: {}", demoUser.toString());
+        log.info("generate event? {}", generateEvent);
 
         int scenario = rand.nextInt(9) + 1;
 
-        log.debug("event scenario: {}", scenario);
+        log.debug("event scenario is {}", scenario);
 
         if (scenario == 1) {
 
-            bubbleService.bubbleException(demoUser, generateEvent);
+            bubbleService.bubbleException(user, generateEvent);
 
         } else if (scenario == 2) {
 
-            catchAndIgnoreService.catchAndIgnore(demoUser, generateEvent);
+            catchAndIgnoreService.catchAndIgnore(user, generateEvent);
 
         } else if (scenario == 3) {
 
-            warningService.warningsAbound(demoUser, generateEvent);
+            warningService.warningsAbound(user, generateEvent);
 
         } else if (scenario == 4) {
 
-            slowService.longRunningMethod(demoUser, generateEvent);
+            slowService.longRunningMethod(user, generateEvent);
 
         } else if (scenario == 5) {
 
-            customEventService.fireCustomEvent(demoUser, generateEvent);
+            customEventService.fireCustomEvent(user, generateEvent);
 
         } else if (scenario == 6) {
 
-            catchAndLogService.catchAndLog(demoUser, generateEvent);
+            catchAndLogService.catchAndLog(user, generateEvent);
 
         } else if (scenario == 7) {
 
-            uncaughtExceptionService.cantCatchMe(demoUser, generateEvent);
+            uncaughtExceptionService.cantCatchMe(user, generateEvent);
 
         } else if (scenario == 8) {
 
-            httpService.throw500(demoUser, generateEvent);
+            httpService.throw500(user, generateEvent);
 
         } else if (scenario == 9) {
 
-            httpService.throw404(demoUser, generateEvent);
+            httpService.throw404(user, generateEvent);
 
         } else {
 
-            log.warn("invalid scenario: {}", scenario);
+            log.warn("{} is an invalid scenario", scenario);
 
         }
 
         if (counter == 0 || counter % 10 != 0) {
             try {
-                veryBrokenService.execute(demoUser, true);
+                veryBrokenService.execute(user, true);
             } catch (UnsupportedOperationException e) {
                 // need to investigate why this method always fails
             }

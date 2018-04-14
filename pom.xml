@@ -34,6 +34,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- for http errors -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -44,23 +45,36 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency>
 
+        <!-- for loading data -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-csv</artifactId>
             <version>2.9.4</version>
         </dependency>
 
+        <!-- for custom event api -->
         <dependency>
             <groupId>com.takipi</groupId>
             <artifactId>takipi-sdk</artifactId>
             <version>0.2.0</version>
         </dependency>
+
+
+        <!-- for database -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

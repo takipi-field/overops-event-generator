@@ -1,95 +1,81 @@
 package veil.oo.test.domain;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.LocalDate;
+
+@Entity
 public class User {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String emailAddress;
-    private String gender;
-    private String ipAddress;
+    private LocalDate birthDate;
+    private String placeOfBirth;
     private String ssn;
     private String password;
     private String note;
-    private String lastLogin;
 
-    public int getId() {
-        return id;
+    public User() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public User(String firstName, String middleName, String lastName, String emailAddress, LocalDate birthDate, String placeOfBirth, String ssn, String password, String note) {
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+        this.birthDate = birthDate;
+        this.placeOfBirth = placeOfBirth;
+        this.ssn = ssn;
+        this.password = password;
+        this.note = note;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getMiddleName() {
+        return middleName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmailAddress() {
         return emailAddress;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
     }
 
     public String getSsn() {
         return ssn;
     }
 
-    public void setSsn(String ssn) {
-        this.ssn = ssn;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getNote() {
         return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public String getLastLogin() {
-        return lastLogin;
-    }
-
-    public void setLastLogin(String lastLogin) {
-        this.lastLogin = lastLogin;
     }
 
     @Override
@@ -97,7 +83,14 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", birthDate=" + birthDate +
+                ", placeOfBirth='" + placeOfBirth + '\'' +
+                ", ssn='" + ssn + '\'' +
+                ", password='" + password + '\'' +
+                ", note='" + note + '\'' +
                 '}';
     }
 }
