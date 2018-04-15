@@ -11,7 +11,6 @@ import veil.oo.test.domain.User;
 import veil.oo.test.domain.UserRepository;
 
 import java.time.LocalDate;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,8 +20,6 @@ public class OverOpsEventGeneratorApplication {
     private static final Logger log = LoggerFactory.getLogger(OverOpsEventGeneratorApplication.class);
 
     private static final int STARTUP_SLEEP = 10000;
-
-    private final Random random = new Random();
 
     public static void main(String[] args) {
         SpringApplication.run(OverOpsEventGeneratorApplication.class, args);
