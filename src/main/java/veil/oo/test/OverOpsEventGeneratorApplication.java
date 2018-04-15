@@ -58,6 +58,8 @@ public class OverOpsEventGeneratorApplication {
     public CommandLineRunner generateErrors(UserRepository repository, Controller controller) {
         return (args) -> {
 
+            int userCount = (int)repository.count();
+
             AtomicLong counter = new AtomicLong(0);
 
             log.info("sleeping for {} ms before starting", STARTUP_SLEEP);
@@ -72,7 +74,7 @@ public class OverOpsEventGeneratorApplication {
 
             while (true) {
 
-                int randomId = ThreadLocalRandom.current().nextInt(1, 4);
+                int randomId = ThreadLocalRandom.current().nextInt(1, userCount + 1);
 
                 repository.findById((long) randomId).ifPresent(user -> {
                     try {
