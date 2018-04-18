@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import veil.oo.test.controller.Controller;
 import veil.oo.test.domain.User;
 import veil.oo.test.domain.UserRepository;
@@ -52,6 +53,7 @@ public class OverOpsEventGeneratorApplication {
     }
 
     @Bean
+    @Profile("!test")
     public CommandLineRunner generateErrors(UserRepository repository, Controller controller) {
         return (args) -> {
 
