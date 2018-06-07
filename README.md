@@ -20,5 +20,6 @@ mvn clean package
 cf cups takipi -p '{ "secret_key": "<YOUR_KEY>" }'
 cf push overops-event-generator -p target/overops-event-generator-0.0.1-SNAPSHOT.jar
 cf bind-service overops-event-generator takipi
-cf restage my-app
+cf restage overops-event-generator
+
 ```
