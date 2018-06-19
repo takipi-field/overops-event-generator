@@ -8,11 +8,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 @Aspect
-@Configuration
+@Component
 public class AuditLoggingAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -29,16 +29,24 @@ public class AuditLoggingAspect {
     }
 
     @Around("execution(* veil.oo.test.service.*.*(..))")
-    public void around(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
 
         StopWatch sw = new StopWatch(joinPoint.toString());
+
         sw.start();
 
-        joinPoint.proceed();
+        try {
 
-        sw.stop();
+            return joinPoint.proceed();
 
-        log.trace(sw.shortSummary());
+        } finally {
+
+            log.trace(sw.shortSummary());
+
+            sw.stop();
+        }
+
+
     }
 
 }

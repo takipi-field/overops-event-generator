@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import veil.oo.test.domain.User;
+import veil.oo.test.utils.TakipiAverageExecutionTime;
 
 @Service
 public class WarningService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @TakipiAverageExecutionTime
     public void warningsAbound(User demoUser, boolean generateEvent) {
 
         log.trace("user details: {}", demoUser.toString());
