@@ -1,5 +1,6 @@
 package veil.oo.test;
 
+import com.takipi.sdk.v1.api.Takipi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -53,11 +54,16 @@ public class OverOpsEventGeneratorApplication {
     }
 
     @Bean
+    Takipi buildTakipi() {
+        return Takipi.create("OVEROPS_EVENT_GENERATOR");
+    }
+
+    @Bean
     @Profile("!test")
     public CommandLineRunner generateErrors(UserRepository repository, Controller controller) {
         return (args) -> {
 
-            int userCount = (int)repository.count();
+            int userCount = (int) repository.count();
 
             AtomicLong counter = new AtomicLong(0);
 
