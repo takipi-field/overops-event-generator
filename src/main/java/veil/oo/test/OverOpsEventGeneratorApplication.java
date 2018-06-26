@@ -87,17 +87,25 @@ public class OverOpsEventGeneratorApplication {
             }
 
 
-            AtomicLong counter = new AtomicLong(0);
+            AtomicLong invocationCounter = new AtomicLong(0);
+            AtomicLong eventCounter = new AtomicLong(0);
 
-            while (events == -1 || counter.get() < events) {
+            while (events == -1 || eventCounter.get() < events) {
 
                 int randomUserId = ThreadLocalRandom.current().nextInt(1, userCount + 1);
 
                 repository.findById((long) randomUserId).ifPresent(user -> {
+
+                    boolean eventGenerated = false;
+
                     try {
-                        controller.route(counter.get(), user);
+                        eventGenerated = controller.route(invocationCounter.get(), user);
                     } catch (Exception e) {
-                        log.error(e.getMessage(), e);
+                        log.error("THIS IS A BUG IN THE GENERATOR: " + e.getMessage(), e);
+                    } finally {
+                        if (eventGenerated) {
+                            eventCounter.incrementAndGet();
+                        }
                     }
 
                     try {
@@ -107,10 +115,11 @@ public class OverOpsEventGeneratorApplication {
                     }
                 });
 
-                counter.incrementAndGet();
+                invocationCounter.incrementAndGet();
+
             }
 
-            log.info("event generator finished!!!!");
+            log.info("event generator finished!!!!  ran {} times and generated {} events.", invocationCounter.get(), eventCounter.get());
         };
     }
 }
