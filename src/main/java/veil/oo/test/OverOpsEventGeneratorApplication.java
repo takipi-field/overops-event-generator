@@ -3,11 +3,13 @@ package veil.oo.test;
 import com.takipi.sdk.v1.api.Takipi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import veil.oo.test.controller.Controller;
 import veil.oo.test.domain.User;
 import veil.oo.test.domain.UserRepository;
@@ -28,7 +30,8 @@ public class OverOpsEventGeneratorApplication {
     }
 
     @Bean
-    public CommandLineRunner createUsers(UserRepository repository) {
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public ApplicationRunner createUsers(UserRepository repository) {
         return (args) -> {
             repository.save(new User("George", null, "Gordon", "lord.byron@gmail.com", LocalDate.of(1751, 12, 26), "London, England", "111-23-23123", "carelesschild", "George Gordon was born in London, England, third and youngest son of Cosmo George Gordon, 3rd Duke of Gordon, and the brother of Alexander Gordon, 4th Duke of Gordon"));
             repository.save(new User("Edgar", "Allan", "Poe", "edgar@gmail.com", LocalDate.of(1809, 1, 19), "Boston, Massachusetts", "222-23-4321", "theraven", "Poe was born in Boston, the second child of two actors. His father abandoned the family in 1810, and his mother died the following year."));
@@ -60,12 +63,10 @@ public class OverOpsEventGeneratorApplication {
 
     @Bean
     @Profile("!test")
-    public CommandLineRunner generateErrors(UserRepository repository, Controller controller) {
+    public ApplicationRunner generateErrors(UserRepository repository, Controller controller) {
         return (args) -> {
 
             int userCount = (int) repository.count();
-
-            AtomicLong counter = new AtomicLong(0);
 
             log.info("sleeping for {} ms before starting", STARTUP_SLEEP);
 
@@ -77,13 +78,24 @@ public class OverOpsEventGeneratorApplication {
 
             log.info("waking up and ready to generate errors");
 
-            while (true) {
+            long events = -1;
 
-                int randomId = ThreadLocalRandom.current().nextInt(1, userCount + 1);
+            if (args.containsOption("oo.events")) {
+                events = Long.parseLong(args.getOptionValues("oo.events").get(0));
 
-                repository.findById((long) randomId).ifPresent(user -> {
+                log.info("limiting number of events to {}", events);
+            }
+
+
+            AtomicLong counter = new AtomicLong(0);
+
+            while (events == -1 || counter.get() < events) {
+
+                int randomUserId = ThreadLocalRandom.current().nextInt(1, userCount + 1);
+
+                repository.findById((long) randomUserId).ifPresent(user -> {
                     try {
-                        controller.route(counter.incrementAndGet(), user);
+                        controller.route(counter.get(), user);
                     } catch (Exception e) {
                         log.error(e.getMessage(), e);
                     }
@@ -94,7 +106,11 @@ public class OverOpsEventGeneratorApplication {
                         log.error(e.getMessage(), e);
                     }
                 });
+
+                counter.incrementAndGet();
             }
+
+            log.info("event generator finished!!!!");
         };
     }
 }
