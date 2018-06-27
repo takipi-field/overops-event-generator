@@ -30,6 +30,9 @@ or
 nohup java -agentlib:TakipiAgent -jar overops-event-generator-1.0.0.jar &
 ```
 
+## Timer Configuration
+This application includes a class called `SlowService` which contains a method called `longRunningMethod`.  This method will always take 5 seconds to execute.  You can easily add this method to the OverOps Timer's dialog with a threshold below 5 seconds to test the Timer capability.
+
 ## Pivotal Cloud Foundry (PCF) Example
 Deploying to PCF is a trivial exercise with OverOps.  The OverOps agent is available as part of the PCF Java Build Pack under our original name Takipi.  More details can be found [here](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-takipi_agent.md)  
 
