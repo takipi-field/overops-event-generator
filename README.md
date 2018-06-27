@@ -1,5 +1,5 @@
 # OverOps Event Generator
-This project is a simple Spring Boot application that generates a variety of error types useful for testing OverOps installations and highlighting features.  This application is similar in purpose the `JavaJam` error generating `jar` which is often referenced in OveOps docs and samples, but expands upon its usefulness.  This application includes the following features:
+This project is a simple Spring Boot application that generates a variety of error types useful for testing OverOps installations and highlighting features.  This application is similar in purpose the `JavaJam` error generating `jar` which is often referenced in OverOps docs and samples, but expands upon its usefulness.  This application includes the following features:
 
 * easy to understand errors which correlate to all supported OverOps event types
 * logging statements at various levels to highlight log view capabilities 
