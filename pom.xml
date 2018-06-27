@@ -5,7 +5,7 @@
 
     <groupId>veil.oo</groupId>
     <artifactId>overops-event-generator</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>OverOps Event Generator</name>
