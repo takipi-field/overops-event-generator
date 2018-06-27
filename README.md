@@ -48,7 +48,7 @@ cf cups takipi -p '{ "secret_key": "<YOUR_KEY>" }'
 # push the generator to PCF
 cf push overops-event-generator -p target/overops-event-generator-1.0.0.jar
 
-# bind the takipi service to the generator
+# bind the "takipi" service to the generator
 cf bind-service overops-event-generator takipi
 
 # restage the generator and enjoy
