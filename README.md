@@ -3,7 +3,7 @@ This project is a simple Spring Boot application that generates a variety of Ove
 
 * easy to understand events which correlate to all supported OverOps event types including:
     * Caught and Uncaught Exceptions
-    * Logged ERROR and WARN statements
+    * Logged `ERROR` and `WARN` statements
     * Swallowed Exceptions
     * Custom Events via OverOps [SDK](https://github.com/takipi/takipi-sdk)
     * HTTP Errors
