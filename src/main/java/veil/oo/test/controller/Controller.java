@@ -96,11 +96,11 @@ public class Controller {
 
         } else if (scenario == 8) {
 
-            httpService.throw500(user, generateEvent);
+            httpService.callFiveHundred(user, generateEvent);
 
         } else if (scenario == 9) {
 
-            httpService.throw404(user, generateEvent);
+            httpService.callFourHundredFour(user, generateEvent);
 
         } else {
 

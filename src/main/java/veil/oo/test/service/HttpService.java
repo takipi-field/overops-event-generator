@@ -16,7 +16,7 @@ public class HttpService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public void throw500(User demoUser, boolean generateEvent) {
+    public void callFiveHundred(User demoUser, boolean generateEvent) {
 
         log.trace("user details: {}", demoUser.toString());
 
@@ -32,7 +32,7 @@ public class HttpService {
 
             ResponseEntity<String> entity = restTemplate.getForEntity(builder.toUriString(), String.class);
 
-            log.debug("throw500 get returned this value: {}", entity.getBody());
+            log.debug("GET call to [{}] returned this value: {}", url, entity.getBody());
 
         } catch (RestClientException e) {
 
@@ -43,7 +43,7 @@ public class HttpService {
 
     }
 
-    public void throw404(User demoUser, boolean generateEvent) {
+    public void callFourHundredFour(User demoUser, boolean generateEvent) {
 
         log.trace("user details: {}", demoUser.toString());
 
@@ -59,7 +59,7 @@ public class HttpService {
 
             ResponseEntity<String> entity = restTemplate.getForEntity(builder.toUriString(), String.class);
 
-            log.debug("throw404 get returned this value: {}", entity.getBody());
+            log.debug("GET call to [{}] returned this value: {}", url, entity.getBody());
 
         } catch (RestClientException e) {
 
