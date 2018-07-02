@@ -22,12 +22,12 @@ Execute the following commands clean and package the jar:
 To start and monitor this application with OverOps you can execute the following commands.  Full documentation on installing and configuring OverOps can be found [here](http://support.overops.com).
 
 ```bash
-java -agentlib:TakipiAgent -jar overops-event-generator-1.1.0.jar
+java -agentlib:TakipiAgent -jar overops-event-generator-1.2.0.jar
 ```
 or 
 
 ```bash
-nohup java -agentlib:TakipiAgent -jar overops-event-generator-1.1.0.jar &
+nohup java -agentlib:TakipiAgent -jar overops-event-generator-1.2.0.jar &
 ```
 
 ## Timer Configuration
