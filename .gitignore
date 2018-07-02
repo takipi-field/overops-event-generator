@@ -25,3 +25,5 @@ nbdist/
 
 *.log
 *.log.*
+
+application-*.properties
