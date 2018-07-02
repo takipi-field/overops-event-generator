@@ -103,8 +103,7 @@
                         <manifestEntries>
                             <Takipi-Name>${project.artifactId}</Takipi-Name>
                             <Takipi-Deployment-Name>${project.version}</Takipi-Deployment-Name>
-                            <Takipi-Git-Repo-Url>https://github.com/overops-samples/overops-event-generator.git
-                            </Takipi-Git-Repo-Url>
+                            <Takipi-Git-Repo-Url>https://github.com/overops-samples/overops-event-generator.git</Takipi-Git-Repo-Url>
                         </manifestEntries>
                     </archive>
                 </configuration>
