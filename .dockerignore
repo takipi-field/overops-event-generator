@@ -1,0 +1,6 @@
+target
+.idea
+*.iml
+overops-event-generator.log
+overops-event-generator.log.*
+README.md
