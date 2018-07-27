@@ -51,10 +51,25 @@ cf push overops-event-generator -p target/overops-event-generator-1.2.1.jar
 # bind the "takipi" service to the generator
 cf bind-service overops-event-generator takipi
 
-# restage the generator and enjoy
+# re-stage the generator and enjoy
 cf restage overops-event-generator
 
 ```
 
 ## Docker Examples
-** coming soon **
+I've included a simple `Dockerfile` that can be used to launch the event generator.  You can execute the following commands:
+
+### Building the Image
+```bash
+docker build --no-cache -t timveil/overops-event-generator .
+```
+
+### Publishing the Image
+```bash
+docker push timveil/overops-event-generator:latest
+```
+
+### Running the Image
+```bash
+docker run -it timveil/overops-event-generator
+```
