@@ -98,6 +98,7 @@
     <build>
         <plugins>
 
+            <!-- download and copy dependency sources to specific folder so it can be indexed bo OO -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
