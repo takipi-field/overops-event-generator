@@ -5,7 +5,7 @@ LABEL maintainer="tjveil@gmail.com"
 ARG PROJECT_DIR=/overops-event-generator
 
 # install java and update OS
-RUN yum install -y java-1.8.0-openjdk-devel.x86_64 net-tools \
+RUN yum install -y java-1.8.0-openjdk-devel.x86_64 \
     && yum -y update \
     && yum clean all \
     && mkdir $PROJECT_DIR
