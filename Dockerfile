@@ -25,9 +25,8 @@ RUN ./mvnw clean package -DskipTests
 
 ARG SOURCES_DIR=/sources
 
-#VOLUME $SOURCES_DIR
+VOLUME $SOURCES_DIR
 
-RUN ./mvnw dependency:copy-dependencies -Dsources.dir=$SOURCES_DIR \
-    && cp target/*.jar $SOURCES_DIR
+RUN ./mvnw dependency:copy-dependencies -Dsources.dir=$SOURCES_DIR
 
 ENTRYPOINT java -jar -Dtakipi.sources.path=$SOURCES_DIR target/*.jar
