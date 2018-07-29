@@ -32,4 +32,7 @@ VOLUME $SOURCES_DIR
 
 RUN ./mvnw dependency:copy-dependencies -Dsources.dir=$SOURCES_DIR
 
+# port for embedded Jetty
+EXPOSE 8080
+
 ENTRYPOINT java -jar -Dtakipi.sources.path=$SOURCES_DIR target/*.jar
