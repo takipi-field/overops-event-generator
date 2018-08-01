@@ -28,12 +28,13 @@ WORKDIR $PROJECT_DIR
 # package generator
 RUN ./mvnw clean package -DskipTests
 
-# copy 3rd party sources and mount as volume
-ENV SOURCES_DIR=/sources
-VOLUME $SOURCES_DIR
-RUN ./mvnw dependency:copy-dependencies -Dsources.dir=$SOURCES_DIR
+# copy 3rd party sources
+RUN ./mvnw dependency:copy-dependencies -Dsources.dir=/sources
 
 # port for embedded Jetty
 EXPOSE 8080
 
-ENTRYPOINT java -Dtakipi.sources.path=$SOURCES_DIR -jar target/*.jar
+# mount sources as volume
+VOLUME /sources
+
+ENTRYPOINT java -Dtakipi.sources.path=/sources -jar target/*.jar
