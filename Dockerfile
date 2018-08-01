@@ -29,7 +29,7 @@ WORKDIR $PROJECT_DIR
 RUN ./mvnw clean package -DskipTests
 
 # copy 3rd party sources and mount as volume
-ARG SOURCES_DIR=/sources
+ENV SOURCES_DIR=/sources
 VOLUME $SOURCES_DIR
 RUN ./mvnw dependency:copy-dependencies -Dsources.dir=$SOURCES_DIR
 
