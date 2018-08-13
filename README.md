@@ -61,7 +61,7 @@ I've included a simple `Dockerfile` that can be used to launch the event generat
 
 ### Building the Image
 ```bash
-docker build --no-cache -t timveil/overops-event-generator .
+docker build --no-cache -t timveil/overops-event-generator:latest .
 ```
 
 ### Publishing the Image
@@ -71,5 +71,5 @@ docker push timveil/overops-event-generator:latest
 
 ### Running the Image
 ```bash
-docker run -it timveil/overops-event-generator
+docker run -it timveil/overops-event-generator:latest
 ```
