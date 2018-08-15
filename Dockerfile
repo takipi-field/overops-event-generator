@@ -26,10 +26,8 @@ RUN sed -i 's/\r$//' $PROJECT_DIR/mvnw && chmod a+x $PROJECT_DIR/mvnw
 WORKDIR $PROJECT_DIR
 
 # package generator
-RUN ./mvnw clean package -DskipTests
-
-# copy 3rd party sources
-RUN ./mvnw dependency:copy-dependencies -Dsources.dir=/sources
+RUN ./mvnw clean package -DskipTests \
+    && ./mvnw dependency:copy-dependencies -Dsources.dir=/sources
 
 # port for embedded Jetty
 EXPOSE 8080
