@@ -25,7 +25,11 @@ public class CustomEventService {
     public CustomEventService(Takipi takipi) {
         this.takipi = takipi;
 
-        takipiContext = takipi.contexts().createContext(this.getClass());
+        Class clazz = this.getClass();
+
+        log.info("creating 'customevent' context for class : {}", clazz);
+
+        takipiContext = takipi.contexts().createContext(clazz);
     }
 
 
