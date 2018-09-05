@@ -34,13 +34,19 @@ public class TakipiAspect {
 
         Class declaringType = joinPoint.getSignature().getDeclaringType();
 
-        log.info("creating 'count' context for class : {}", declaringType);
 
-        TakipiContext context = takipi.contexts().createContext(declaringType);
+        try {
+            log.info("creating 'count' context for class : {}", declaringType);
 
-        TakipiCountMetric countMetric = takipi.metrics().createCountMetric("COUNT_" + joinPoint.getSignature().getName());
+            TakipiContext context = takipi.contexts().createContext(declaringType);
 
-        countMetric.increment(context);
+            TakipiCountMetric countMetric = takipi.metrics().createCountMetric("COUNT_" + joinPoint.getSignature().getName());
+
+            countMetric.increment(context);
+
+        } catch (Exception e) {
+            log.error("an exception occurred while trying to capture custom metric: " + e.getMessage(), e);
+        }
 
     }
 
@@ -49,28 +55,36 @@ public class TakipiAspect {
 
         Class declaringType = joinPoint.getSignature().getDeclaringType();
 
-        log.info("creating 'average' context for class : {}", declaringType);
-
-        TakipiContext context = takipi.contexts().createContext(declaringType);
-
         String metricName = "AVERAGE_" + joinPoint.getSignature().getName();
-
-        TakipiAverageMetric averageMetric = takipi.metrics().createAverageMetric(metricName);
 
         StopWatch sw = new StopWatch(metricName);
 
-        sw.start();
-
         try {
 
-            return joinPoint.proceed();
+            log.info("creating 'average' context for class : {}", declaringType);
 
-        } finally {
+            TakipiContext context = takipi.contexts().createContext(declaringType);
 
-            sw.stop();
+            TakipiAverageMetric averageMetric = takipi.metrics().createAverageMetric(metricName);
 
-            averageMetric.update(context, sw.getTotalTimeMillis());
+            sw.start();
+
+            try {
+
+                return joinPoint.proceed();
+
+            } finally {
+
+                sw.stop();
+
+                averageMetric.update(context, sw.getTotalTimeMillis());
+            }
+
+        } catch (Exception e) {
+            log.error("an exception occurred while trying to capture custom metric: " + e.getMessage(), e);
         }
+
+        return joinPoint.proceed();
 
     }
 }
