@@ -19,7 +19,7 @@ public class CustomEventService {
 
     private Takipi takipi;
 
-    private TakipiContext takipiContext;
+    private TakipiContext takipiContext = null;
 
     @Autowired
     public CustomEventService(Takipi takipi) {
@@ -27,9 +27,17 @@ public class CustomEventService {
 
         Class clazz = this.getClass();
 
-        log.info("creating 'customevent' context for class : {}", clazz);
+        log.info("creating context for class : {}", clazz);
 
-        takipiContext = takipi.contexts().createContext(clazz);
+        try {
+
+            takipiContext = takipi.contexts().createContext(clazz);
+
+        } catch (Exception e) {
+
+            log.error("there was a problem creating context for class " + clazz + ": " + e.getMessage(), e);
+
+        }
     }
 
 
@@ -53,10 +61,15 @@ public class CustomEventService {
 
             customEvent.fire();
 
+            if (takipiContext != null) {
 
-            TakipiCountMetric countMetric = takipi.metrics().createCountMetric("Invocation Count Metric");
+                TakipiCountMetric countMetric = takipi.metrics().createCountMetric("Invocation Count Metric");
 
-            countMetric.increment(takipiContext);
+                countMetric.increment(takipiContext);
+
+            } else {
+                log.warn("TakipiContext is null; this is an SDK bug");
+            }
 
 
         }
