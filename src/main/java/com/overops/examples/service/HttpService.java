@@ -1,11 +1,14 @@
 package com.overops.examples.service;
 
 import com.overops.examples.web.RestEndpoint;
-import org.springframework.http.ResponseEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
 
 
 @Service
@@ -14,25 +17,28 @@ public class HttpService extends AbstractEventService {
     @Override
     void fireEvent(boolean generateEvent) {
 
-        String url = "http://localhost:8080/throw500";
+        String url = "http://localhost:8080/throwError";
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(url)
                 .queryParam(RestEndpoint.GENERATE_EVENT, generateEvent);
 
-        RestTemplate restTemplate = new RestTemplate();
-
         try {
+            HttpClient client = HttpClientBuilder.create().build();
 
-            ResponseEntity<String> entity = restTemplate.getForEntity(builder.toUriString(), String.class);
+            String uri = builder.toUriString();
 
-            log.debug("GET call to [{}] returned this value: {}", url, entity.getBody());
+            log.debug("calling uri = {}", uri);
 
-        } catch (RestClientException e) {
+            HttpResponse response = client.execute(new HttpGet(uri));
+            int statusCode = response.getStatusLine().getStatusCode();
 
-            // log as debug because i don't want another logged error or warn
+            log.debug("status code = {}", statusCode);
 
+        } catch (IOException e) {
             log.debug(e.getMessage(), e);
         }
+
+
     }
 }
