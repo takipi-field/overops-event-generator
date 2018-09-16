@@ -16,7 +16,7 @@ public class UncaughtExceptionService extends AbstractEventService {
             return;
         }
 
-        Executors.newSingleThreadExecutor().execute(() -> {
+        Executors.newSingleThreadExecutor(r -> new Thread(r, "uncaught-exception-thread")).execute(() -> {
 
             /*
 
@@ -25,6 +25,8 @@ public class UncaughtExceptionService extends AbstractEventService {
                 This demonstrates what happens when an unexpected and uncaught exception occurs in the code.
 
             */
+
+            log.debug("this thread will die with an uncaught exception");
 
             throw new ExampleUncaughtException("this exception is uncaught and a BIG potential problem");
 
