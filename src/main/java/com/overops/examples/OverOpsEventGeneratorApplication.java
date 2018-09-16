@@ -1,5 +1,6 @@
 package com.overops.examples;
 
+import com.overops.examples.controller.Controller;
 import com.overops.examples.domain.User;
 import com.overops.examples.domain.UserRepository;
 import com.takipi.sdk.v1.api.Takipi;
@@ -12,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import com.overops.examples.controller.Controller;
 
 import java.time.LocalDate;
 import java.util.concurrent.ThreadLocalRandom;
