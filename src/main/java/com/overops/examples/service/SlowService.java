@@ -1,36 +1,30 @@
 package com.overops.examples.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import com.overops.examples.domain.User;
 
 @Service
-public class SlowService {
+public class SlowService extends AbstractEventService {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public void longRunningMethod(User demoUser, boolean generateEvent) {
+    @Override
+    void fireEvent(boolean generateEvent) {
 
-        log.trace("user details: {}", demoUser.toString());
+        if (!generateEvent) {
+            return;
+        }
 
-        if (generateEvent) {
-            log.info("i'm concerned this method could take too long to execute...");
+        /*
 
-             /*
+            Timer Scenario:
 
-                Timer Scenario:
+            OverOps can be configured to capture events when method duration exceeds a user defined threshold
 
-                OverOps can be configured to capture events when method duration exceeds a user defined threshold
+        */
 
-             */
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                log.error(e.getMessage(), e);
-            }
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(), e);
         }
     }
-
 }

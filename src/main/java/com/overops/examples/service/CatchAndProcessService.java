@@ -1,39 +1,25 @@
 package com.overops.examples.service;
 
-import com.overops.examples.domain.User;
-import com.overops.examples.error.BusinessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.overops.examples.error.ExampleCaughtException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CatchAndProcessService {
+public class CatchAndProcessService extends AbstractEventService {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    @Override
+    void fireEvent(boolean generateEvent) {
 
-    public void handleException(User demoUser, boolean generateEvent) {
-
-        log.trace("user details: {}", demoUser.toString());
-
-        boolean exceptionOccurred = false;
+        if (!generateEvent) {
+            return;
+        }
 
         try {
 
-            if (generateEvent) {
+            throw new ExampleCaughtException("this exception is thrown in one method and expected to be handled in another.");
 
-                throw new BusinessException("this exception is thrown in one method and expected to be handled in another.");
-
-            }
-
-        } catch (BusinessException e) {
+        } catch (ExampleCaughtException e) {
             log.debug("here we catch: " + e.getMessage(), e);
-
-            exceptionOccurred = true;
-
         }
 
-        log.debug("an exception occurred in this method.  value = {}", exceptionOccurred);
     }
-
-
 }

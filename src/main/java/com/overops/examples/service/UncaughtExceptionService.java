@@ -1,42 +1,33 @@
 package com.overops.examples.service;
 
-import com.overops.examples.domain.User;
-import com.overops.examples.error.UncaughtException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.overops.examples.error.ExampleUncaughtException;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Executors;
 
 @Service
-public class UncaughtExceptionService {
+public class UncaughtExceptionService extends AbstractEventService {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public void cantCatchMe(User demoUser, boolean generateEvent) {
+    @Override
+    void fireEvent(boolean generateEvent) {
 
+        if (!generateEvent) {
+            return;
+        }
 
         Executors.newSingleThreadExecutor().execute(() -> {
 
-            log.trace("user details: {}", demoUser.toString());
+            /*
 
-            if (generateEvent) {
+                Uncaught Exception Scenario:
 
-                log.debug("about to do something very dangerous and unpredictable.");
+                This demonstrates what happens when an unexpected and uncaught exception occurs in the code.
 
-                /*
+            */
 
-                    Uncaught Exception Scenario:
+            throw new ExampleUncaughtException("this exception is uncaught and a BIG potential problem");
 
-                    This demonstrates what happens when an unexpected and uncaught exception occurs in the code.
-
-                */
-
-                throw new UncaughtException("this exception is uncaught and a BIG potential problem");
-            }
-
-            log.debug("no uncaught exception generated this time :)");
         });
     }
-
 }
