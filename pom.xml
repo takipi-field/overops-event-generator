@@ -131,6 +131,7 @@
                             <Takipi-Application-Name>${project.artifactId}</Takipi-Application-Name>
                             <Takipi-Deployment-Name>${project.version}</Takipi-Deployment-Name>
                             <Takipi-Git-Repo-Url>https://github.com/overops-samples/overops-event-generator.git</Takipi-Git-Repo-Url>
+                            <Takipi-Git-Prefix>src/main/java</Takipi-Git-Prefix>
                         </manifestEntries>
                     </archive>
                 </configuration>
