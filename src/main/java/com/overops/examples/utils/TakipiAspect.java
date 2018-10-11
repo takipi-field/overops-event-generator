@@ -34,7 +34,6 @@ public class TakipiAspect {
 
         Class declaringType = joinPoint.getSignature().getDeclaringType();
 
-
         try {
             log.info("creating 'count' context for class : {}", declaringType);
 
