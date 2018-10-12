@@ -99,18 +99,8 @@
     </dependencies>
 
     <build>
-        <plugins>
 
-            <!-- download and copy dependency sources to specific folder so they can be indexed by OO -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <classifier>sources</classifier>
-                    <includeScope>runtime</includeScope>
-                    <outputDirectory>${sources.dir}</outputDirectory>
-                </configuration>
-            </plugin>
+        <plugins>
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>
