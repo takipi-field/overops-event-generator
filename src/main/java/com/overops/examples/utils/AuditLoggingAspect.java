@@ -17,18 +17,18 @@ public class AuditLoggingAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Before("execution(* veil.oo.test.service.*.*(..))")
+    @Before("execution(* com.overops.examples.service.*.*(..))")
     public void before(JoinPoint joinPoint) {
         log.debug("before {}", joinPoint);
     }
 
 
-    @After("execution(* veil.oo.test.service.*.*(..))")
+    @After("execution(* com.overops.examples.service.*.*(..))")
     public void after(JoinPoint joinPoint) {
         log.debug("after {}", joinPoint);
     }
 
-    @Around("execution(* veil.oo.test.service.*.*(..))")
+    @Around("execution(* com.overops.examples.service.*.*(..))")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
 
         StopWatch sw = new StopWatch(joinPoint.toString());
