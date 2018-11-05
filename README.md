@@ -38,7 +38,7 @@ You can view the H2 web console at `/console` for example `http://localhost:8080
 | Driver Class | `org.h2.Driver` |
 | JDBC URL | `jdbc:h2:mem:overops` |
 | User Name | `sa` |
-| Password | `` |
+| Password |  |
 
 ## Timer Configuration
 This application includes a class called `SlowService` which contains a method called `longRunningMethod`.  This method will always take 5 seconds to execute.  You can easily add this method to the OverOps Timer's dialog with a threshold below 5 seconds to test the Timer capability.
