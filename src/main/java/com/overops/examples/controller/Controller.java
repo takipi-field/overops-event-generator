@@ -29,9 +29,11 @@ public class Controller {
 
     private final HttpService httpService;
 
+    private final XmlParseService xmlParseService;
+
 
     @Autowired
-    public Controller(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService) {
+    public Controller(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService, XmlParseService xmlParseService) {
         this.catchAndProcessService = catchAndProcessService;
         this.catchAndIgnoreService = catchAndIgnoreService;
         this.loggedErrorService = loggedErrorService;
@@ -40,6 +42,7 @@ public class Controller {
         this.loggedWarnService = loggedWarnService;
         this.uncaughtExceptionService = uncaughtExceptionService;
         this.httpService = httpService;
+        this.xmlParseService = xmlParseService;
     }
 
     public boolean route(long counter, User user) {
@@ -80,6 +83,9 @@ public class Controller {
             case HTTP_ERROR:
                 httpService.generateEvent(user, generateEvent, event);
                 break;
+            case XML_PARSE_EXCEPTION:
+				xmlParseService.generateEvent(user, generateEvent, event);
+				break;
         }
 
 
