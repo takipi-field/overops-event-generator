@@ -14,7 +14,8 @@ public enum EventType {
     LOGGED_ERROR,
     TIMER,
     CUSTOM_EVENT,
-    HTTP_ERROR;
+    HTTP_ERROR,
+    XML_PARSE_EXCEPTION;
 
     private static final Random RANDOM = new Random();
 
