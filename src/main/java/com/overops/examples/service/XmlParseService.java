@@ -26,38 +26,30 @@ public class XmlParseService extends AbstractEventService {
 		}
 
 		try {
-			// try to parse bad XML 20% of the time
+			// try to parse bad XML 10% of the time
 			Random random = new Random();
-			int r = random.nextInt(5) + 1;
+			int r = random.nextInt(10) + 1;
 
 			String xmlString;
 
 			if (r == 1) {
-				xmlString = "\n" + 
-					"<Foodstuffs>\n" + 
-					"	<Food id=\"5\">\n" + 
-					"		<name>Taco</name>\n" + 
+				xmlString = "\n" +
+					"<Pets>\n" +
+					"	<pet id=\"3\">\n" +
+					"		<name>Rover</name>\n" +
 					"		<time>" + LocalDateTime.now() + "</time>\n";
 			} else {
-				xmlString = "\n" + 
-					"<Foodstuffs>\n" + 
-					"	<Food id=\"1\">\n" + 
-					"		<name>Pizza</name>\n" + 
+				xmlString = "\n" +
+					"<Pets>\n" +
+					"	<pet id=\"1\">\n" +
+					"		<name>Fluffy</name>\n" +
 					"	   <time>" + LocalDateTime.now() + "</time>\n" +
-					"	</Food>\n" + 
-					"	<Food id=\"2\">\n" + 
-					"		<name>Banana</name>\n" + 
+					"	</pet>\n" +
+					"	<pet id=\"2\">\n" +
+					"		<name>Spot</name>\n" +
 					"	   <time>" + LocalDateTime.now() + "</time>\n" +
-					"	</Food>\n" + 
-					"	<Food id=\"3\">\n" + 
-					"		<name>Carrot</name>\n" + 
-					"		<time>" + LocalDateTime.now() + "</time>\n" +
-					"	</Food>\n" + 
-					"	<Food id=\"4\">\n" + 
-					"		<name>Ice Cream</name>\n" + 
-					"		<time>" + LocalDateTime.now() + "</time>\n" +
-					"	</Food>\n" + 
-					"</Foodstuffs>\n";
+					"	</pet>\n" +
+					"</Pets>\n";
 			}
 
 			InputStream xmlStream = IOUtils.toInputStream(xmlString, "UTF-8");
@@ -73,7 +65,7 @@ public class XmlParseService extends AbstractEventService {
 	}
 }
 
-final class Food {
+final class Pet {
 	private int id;
 	private String name;
 	private LocalDateTime time;
@@ -100,7 +92,7 @@ final class Food {
 
 final class MyHandler extends DefaultHandler {
 
-	private Food food = null;
+	private Pet pet = null;
 	private StringBuilder data = null;
 
 	boolean bName = false;
@@ -109,11 +101,11 @@ final class MyHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-		if (qName.equalsIgnoreCase("Food")) {
+		if (qName.equalsIgnoreCase("Pet")) {
 			String id = attributes.getValue("id");
 
-			food = new Food();
-			food.setId(Integer.parseInt(id));
+			pet = new Pet();
+			pet.setId(Integer.parseInt(id));
 		} else if (qName.equalsIgnoreCase("name")) {
 			bName = true;
 		} else if (qName.equalsIgnoreCase("time")) {
@@ -126,10 +118,10 @@ final class MyHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if (bName) {
-			food.setName(data.toString());
+			pet.setName(data.toString());
 			bName = false;
 		} else if (bTime) {
-			food.setTime(data.toString());
+			pet.setTime(data.toString());
 			bTime = false;
 		}
 	}
