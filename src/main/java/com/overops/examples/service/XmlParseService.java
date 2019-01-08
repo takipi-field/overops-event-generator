@@ -26,9 +26,8 @@ public class XmlParseService extends AbstractEventService {
 		}
 
 		try {
-			// try to parse bad XML 10% of the time
 			Random random = new Random();
-			int r = random.nextInt(10) + 1;
+			int r = random.nextInt(5) + 1;
 
 			String xmlString;
 
