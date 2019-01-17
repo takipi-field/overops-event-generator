@@ -22,12 +22,12 @@ Execute the following commands clean and package the jar:
 To start and monitor this application with OverOps you can execute the following commands.  Full documentation on installing and configuring OverOps can be found [here](http://support.overops.com).
 
 ```bash
-java -agentlib:TakipiAgent -jar overops-event-generator-2.0.0.jar
+java -agentlib:TakipiAgent -jar overops-event-generator-2.1.3.jar
 ```
 or 
 
 ```bash
-nohup java -agentlib:TakipiAgent -jar overops-event-generator-2.0.0.jar &
+nohup java -agentlib:TakipiAgent -jar overops-event-generator-2.1.3.jar &
 ```
 
 ## DB Console
@@ -56,7 +56,7 @@ mvn clean package
 cf cups takipi -p '{ "secret_key": "<YOUR_KEY>" }'
 
 # push the generator to PCF
-cf push overops-event-generator -p target/overops-event-generator-2.0.0.jar
+cf push overops-event-generator -p target/overops-event-generator-2.1.3.jar
 
 # bind the "takipi" service to the generator
 cf bind-service overops-event-generator takipi
