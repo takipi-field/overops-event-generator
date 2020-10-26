@@ -1,0 +1,72 @@
+image: overops/overops-gitlab-plugin:2.34.0
+
+variables:
+  OVEROPS_APPLICATION_NAME: ${CI_PROJECT_NAME}
+  OVEROPS_DEPLOYMENT_NAME: job-${CI_COMMIT_SHORT_SHA}
+  OVEROPS_MARK_UNSTABLE: "true"
+  OVEROPS_NEW_EVENTS: "true"
+  OVEROPS_RESURFACED_ERRORS: "true"
+  OVEROPS_MAX_ERROR_VOLUME: 5
+  OVEROPS_MAX_UNIQUE_ERRORS: 5
+  OVEROPS_CRITICAL_EXCEPTION_TYPES: "ExampleCaughtException, NullPointerException, SAXParseException"
+  OVEROPS_PRINT_TOP_ISSUES: 5
+  OVEROPS_SHOW_EVENTS_FOR_PASSED_GATES: "true"
+  OVEROPS_DEBUG: "true"
+
+stages:
+  - build
+  - test
+  - overops
+  
+compile-assets:
+ stage: build
+ script:
+    - echo Success!
+    
+retrieve-test-scripts:
+ stage: build
+ script:
+    - echo Success!
+    
+compile-app:
+ stage: build
+ script:
+    - echo Success!
+
+code_quality-reviews:
+ stage: test
+ script:
+    - echo Success!
+    
+danger-review:
+ stage: test
+ script:
+    - echo Success!
+    
+invoke-collector:
+ stage: test
+ script:
+   - wget -q --content-disposition https://app.overops.com/app/download?t=sa-tgz
+   - tar xzf takipi-agent-*.tar.gz
+   
+   - echo takipi.deployment.name=job-${CI_COMMIT_SHORT_SHA} > takipi/agent.properties
+   - echo takipi.application.name=${CI_PROJECT_NAME} >> takipi/agent.properties
+   - echo takipi.collector.host=${TAKIPI_COLLECTOR_HOST} >> takipi/agent.properties
+   - echo takipi.collector.port=${TAKIPI_COLLECTOR_PORT} >> takipi/agent.properties
+   - echo shutdownGraceTime=20000 >> takipi/agent.properties
+
+   - ./mvnw -DargLine=-agentpath:./takipi/lib/libTakipiAgent.so test
+
+overops:
+  stage: overops
+  when: on_success
+  allow_failure: false
+  artifacts:
+    name: "OverOps Quality Report $CI_JOB_ID"
+    when: always
+    paths:
+      - quality-report.html
+    untracked: true
+    expire_in: 90 days
+  script:
+   - /opt/run-quality-report.sh
