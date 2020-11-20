@@ -43,6 +43,28 @@ You can view the H2 web console at `/console` for example `http://localhost:8080
 ## Timer Configuration
 This application includes a class called `SlowService` which contains a method called `longRunningMethod`.  This method will always take 5 seconds to execute.  You can easily add this method to the OverOps Timer's dialog with a threshold below 5 seconds to test the Timer capability.
 
+## Running with Docker
+Included is a `Dockerfile` which can be used to build and run the event generator with overops agent.
+
+### Building the Image
+
+```console
+$ docker build . -t overops-event-generator:latest
+
+# Optional: Use a specific agent version
+$ docker build . -t overops-event-generator:latest --build-arg AGENT_VERSION=X.Y.Z
+```
+
+### Running the Image
+The Overops Agent can be configured with Environment variables as described in the Agent Docs: https://doc.overops.com/docs/agent-properties
+
+Required is the TAKIPI_COLLECTOR_HOST variable which should be the hostname or IP of the collector
+
+```console
+$ docker run  --env TAKIPI_COLLECTOR_HOST=<HOSTNAME>  -ti overops-event-generator:latest
+```
+
+
 ## Pivotal Cloud Foundry (PCF) Example
 Deploying to PCF is a trivial exercise with OverOps.  The OverOps agent is available as part of the PCF Java Buildpack under our original name Takipi.  More details can be found [here](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-takipi_agent.md).
 
