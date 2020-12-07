@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-slim as BUILDER
 
-LABEL maintainer="corey.severino@overops.com"
+LABEL maintainer="support@overops.com"
 
 ARG AGENT_VERSION=latest
 
@@ -20,18 +20,22 @@ RUN curl -sL https://s3.amazonaws.com/app-takipi-com/deploy/linux/takipi-agent-$
 
 
 FROM openjdk:8-jre-slim
-LABEL maintainer="corey.severino@overops.com"
-WORKDIR /overops/
+LABEL maintainer="support@overops.com"
 
-COPY --from=BUILDER /overops-event-generator/target/overops-event-generator-*.jar .
-COPY --from=BUILDER /overops-event-generator/takipi ./takipi/
+RUN groupadd --gid 1000 overops
+RUN adduser --home /opt/takipi --uid 1000 --gid 1000 overops
+
+WORKDIR /opt/takipi
+
+COPY --from=BUILDER --chown=1000:1000 /overops-event-generator/target/overops-event-generator-*.jar .
+COPY --from=BUILDER --chown=1000:1000 /overops-event-generator/takipi .
+
+USER 1000:1000 
 
 # set default environmental variables
 ENV TAKIPI_COLLECTOR_HOST=collector
 ENV TAKIPI_COLLECTOR_PORT=6060
-ENV JAVA_TOOL_OPTIONS=-agentpath:/overops/takipi/lib/libTakipiAgent.so=takipi.debug.logconsole
+ENV JETTY_PORT=8888
+ENV JAVA_TOOL_OPTIONS=-agentpath:/opt/takipi/lib/libTakipiAgent.so=takipi.debug.logconsole
 
-# port for embedded Jetty
-EXPOSE 8080
-
-ENTRYPOINT java -jar ./overops-event-generator-*.jar
+ENTRYPOINT java -jar ./overops-event-generator-*.jar --server.port=${JETTY_PORT}
