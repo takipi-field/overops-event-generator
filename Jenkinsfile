@@ -14,7 +14,7 @@ pipeline {
     }
 
     environment {
-        registryCred = 'docker-hub-temp-creds'
+        registryCred = 'docker-hub'
         gitCred = 'build-guy'
     }
 
