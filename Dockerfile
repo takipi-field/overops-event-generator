@@ -3,6 +3,7 @@ FROM openjdk:8-jdk-slim as BUILDER
 LABEL maintainer="support@overops.com"
 
 ARG AGENT_VERSION=latest
+ARG AGENT_URL=https://s3.amazonaws.com/app-takipi-com/deploy/linux/takipi-agent
 
 WORKDIR /overops-event-generator
 
@@ -16,7 +17,7 @@ COPY mvnw mvnw.cmd pom.xml ./
 
 RUN ./mvnw clean package -DskipTests
 
-RUN curl -sL https://s3.amazonaws.com/app-takipi-com/deploy/linux/takipi-agent-${AGENT_VERSION}.tar.gz | tar -xvzf -
+RUN curl -sL ${AGENT_URL}-${AGENT_VERSION}.tar.gz | tar -xvzf -
 
 
 FROM openjdk:8-jre-slim
