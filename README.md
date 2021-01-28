@@ -30,6 +30,12 @@ or
 nohup java -agentlib:TakipiAgent -jar overops-event-generator-2.1.3.jar &
 ```
 
+### Additional Command Line Arguments
+| Argument | Description | Value Type | Default Value |  Example |
+|---|---|---|---|---|
+| `oo.events` | Executes the number events specified and then terminates the application | Integer | -1 (run forever) | `--oo.events=100` |
+| `server.port` | Specify http port to use | Integer | 8080 | `--server.port=1234`
+
 ## DB Console
 You can view the H2 web console at `/console` for example `http://localhost:8080/console`.  Use the following connection properties:
 

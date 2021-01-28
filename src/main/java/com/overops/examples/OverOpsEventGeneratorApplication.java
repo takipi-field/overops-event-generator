@@ -6,9 +6,11 @@ import com.overops.examples.domain.UserRepository;
 import com.takipi.sdk.v1.api.Takipi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
@@ -24,6 +26,13 @@ public class OverOpsEventGeneratorApplication {
     private static final Logger log = LoggerFactory.getLogger(OverOpsEventGeneratorApplication.class);
 
     private static final int STARTUP_SLEEP = 10000;
+
+    private final ConfigurableApplicationContext context;
+
+    public OverOpsEventGeneratorApplication(
+        ConfigurableApplicationContext context) {
+        this.context = context;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(OverOpsEventGeneratorApplication.class, args);
@@ -120,6 +129,9 @@ public class OverOpsEventGeneratorApplication {
             }
 
             log.info("event generator finished!!!!  ran {} times and generated {} events.", invocationCounter.get(), eventCounter.get());
+
+            // Terminate the application since max number of events have been reached
+            System.exit(SpringApplication.exit(context));
         };
     }
 }
