@@ -70,6 +70,13 @@ Required is the TAKIPI_COLLECTOR_HOST variable which should be the hostname or I
 $ docker run  --env TAKIPI_COLLECTOR_HOST=<HOSTNAME>  -ti overops-event-generator:latest
 ```
 
+By default, the event generator will run indefinitely. To set the "--oo.events" option in the docker container set the following environment variables:
+
+```console
+$ docker run  --env TAKIPI_COLLECTOR_HOST=<HOSTNAME> --env IS_DAEMON=false --env NUM_OF_EVENTS=10  -ti overops-event-generator:latest
+```
+
+
 
 ## Pivotal Cloud Foundry (PCF) Example
 Deploying to PCF is a trivial exercise with OverOps.  The OverOps agent is available as part of the PCF Java Buildpack under our original name Takipi.  More details can be found [here](https://github.com/cloudfoundry/java-buildpack/blob/master/docs/framework-takipi_agent.md).

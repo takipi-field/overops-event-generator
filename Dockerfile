@@ -30,6 +30,8 @@ WORKDIR /opt/takipi
 
 COPY --from=BUILDER --chown=1000:1000 /overops-event-generator/target/overops-event-generator-*.jar .
 COPY --from=BUILDER --chown=1000:1000 /overops-event-generator/takipi .
+COPY --chown=1000:1000 scripts/run.sh .
+RUN chmod +x run.sh
 
 USER 1000:1000 
 
@@ -38,5 +40,7 @@ ENV TAKIPI_COLLECTOR_HOST=collector
 ENV TAKIPI_COLLECTOR_PORT=6060
 ENV JETTY_PORT=8888
 ENV JAVA_TOOL_OPTIONS=-agentpath:/opt/takipi/lib/libTakipiAgent.so=takipi.debug.logconsole
+ENV IS_DAEMON=true
+ENV NUM_OF_EVENTS=100
 
-ENTRYPOINT java -jar ./overops-event-generator-*.jar --server.port=${JETTY_PORT}
+ENTRYPOINT ["./run.sh" ]
