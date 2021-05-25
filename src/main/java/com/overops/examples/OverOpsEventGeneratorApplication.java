@@ -114,8 +114,6 @@ public class OverOpsEventGeneratorApplication {
                 int randomUserId = randInt(1, userCount );
 
                 repository.findById((long) randomUserId).ifPresent(user -> {
-
-                    log.error("user "  + user.getLastName() );
                     boolean eventGenerated = false;
 
                     try {

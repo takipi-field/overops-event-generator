@@ -49,7 +49,7 @@ public class Controller {
 
         boolean generateEvent = false;
 
-        if (counter != 0 && counter % 5 == 0) {
+        if ( counter % 5 != 0) {
             generateEvent = true;
         }
 

@@ -5,7 +5,7 @@
 
     <groupId>overops-samples</groupId>
     <artifactId>overops-event-generator</artifactId>
-    <version>2.2.0</version>
+    <version>5.0.0</version>
     <packaging>jar</packaging>
 
     <name>OverOps Event Generator</name>
