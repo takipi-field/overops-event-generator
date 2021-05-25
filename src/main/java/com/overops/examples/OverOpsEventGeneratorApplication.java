@@ -17,6 +17,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -70,6 +71,15 @@ public class OverOpsEventGeneratorApplication {
         return Takipi.create("OVEROPS_EVENT_GENERATOR");
     }
 
+    static Random userRand = new Random( 887766 );
+
+    public static int randInt(int min, int max) {
+
+        int randomNum = userRand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
+
     @Bean
     @Profile("!test")
     public ApplicationRunner generateErrors(UserRepository repository, Controller controller) {
@@ -101,12 +111,11 @@ public class OverOpsEventGeneratorApplication {
 
             while (events == -1 || eventCounter.get() < events) {
 
-                int randomUserId = ThreadLocalRandom.current().nextInt(1, userCount + 1);
-                if ( args.containsOption( "oo.userid" ) ) {
-                    randomUserId = Integer.parseInt( args.getOptionValues( "oo.userid").get(0));
-                }
+                int randomUserId = randInt(1, userCount );
+
                 repository.findById((long) randomUserId).ifPresent(user -> {
 
+                    log.error("user "  + user.getLastName() );
                     boolean eventGenerated = false;
 
                     try {
@@ -120,7 +129,11 @@ public class OverOpsEventGeneratorApplication {
                     }
 
                     try {
-                        Thread.sleep(500);
+                        int sleepAmount = 200;
+                        if ( invocationCounter.get() < 2 ) {
+                            sleepAmount = 500;
+                        }
+                        Thread.sleep(sleepAmount );
                     } catch (InterruptedException e) {
                         log.error(e.getMessage(), e);
                     }
