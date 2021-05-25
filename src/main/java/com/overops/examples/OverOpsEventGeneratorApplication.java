@@ -102,7 +102,9 @@ public class OverOpsEventGeneratorApplication {
             while (events == -1 || eventCounter.get() < events) {
 
                 int randomUserId = ThreadLocalRandom.current().nextInt(1, userCount + 1);
-
+                if ( args.containsOption( "oo.userid" ) ) {
+                    randomUserId = Integer.parseInt( args.getOptionValues( "oo.userid").get(0));
+                }
                 repository.findById((long) randomUserId).ifPresent(user -> {
 
                     boolean eventGenerated = false;

@@ -17,7 +17,7 @@ public enum EventType {
     HTTP_ERROR,
     XML_PARSE_EXCEPTION;
 
-    private static final Random RANDOM = new Random();
+    private static final Random RANDOM = new Random(123456);
 
     private static final List<EventType> EVENT_TYPES = Collections.unmodifiableList(Arrays.asList(values()));
 

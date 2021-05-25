@@ -3,6 +3,7 @@ package com.overops.examples.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,7 +27,7 @@ public class XmlParseService extends AbstractEventService {
 		}
 
 		try {
-			Random random = new Random();
+			Random random = new Random(98765);
 			int r = random.nextInt(5) + 1;
 
 			String xmlString;
@@ -36,17 +37,17 @@ public class XmlParseService extends AbstractEventService {
 					"<Pets>\n" +
 					"	<pet id=\"3\">\n" +
 					"		<name>Rover</name>\n" +
-					"		<time>" + LocalDateTime.now() + "</time>\n";
+					"		<time>2023-03-03T03:03:03</time>\n";
 			} else {
 				xmlString = "\n" +
 					"<Pets>\n" +
 					"	<pet id=\"1\">\n" +
 					"		<name>Fluffy</name>\n" +
-					"	   <time>" + LocalDateTime.now() + "</time>\n" +
+					"	   <time>2021-01-01T01:01:01</time>\n" +
 					"	</pet>\n" +
 					"	<pet id=\"2\">\n" +
 					"		<name>Spot</name>\n" +
-					"	   <time>" + LocalDateTime.now() + "</time>\n" +
+					"	   <time>2022-02-02T02:02:02</time>\n" +
 					"	</pet>\n" +
 					"</Pets>\n";
 			}
@@ -85,7 +86,7 @@ final class Pet {
 		return time;
 	}
 	public void setTime(String string) {
-		this.time = LocalDateTime.parse(string);
+		this.time = LocalDateTime.parse(string, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 	}
 }
 
