@@ -20,12 +20,7 @@ public class RestEndpoint {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(path = "/throwError", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void throwError(@RequestParam(value = GENERATE_EVENT, required = false, defaultValue = "false") boolean generateEvent, HttpServletResponse response) throws IOException {
-
-        if (!generateEvent) {
-            return;
-        }
-
+    public void throwError(HttpServletResponse response) throws IOException {
         HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
 
         log.debug("setting HttpStatus = {}", internalServerError);

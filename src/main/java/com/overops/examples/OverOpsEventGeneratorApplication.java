@@ -17,6 +17,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import java.time.LocalDate;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -29,8 +32,14 @@ public class OverOpsEventGeneratorApplication {
 
     private final ConfigurableApplicationContext context;
 
+    @Autowired
+    private EventCallable1 eventCallable1;
+
+    @Autowired
+    private EventCallable2 eventCallable2;
+
     public OverOpsEventGeneratorApplication(
-        ConfigurableApplicationContext context) {
+            ConfigurableApplicationContext context) {
         this.context = context;
     }
 
@@ -88,50 +97,79 @@ public class OverOpsEventGeneratorApplication {
             log.info("waking up and ready to generate errors");
 
             long events = -1;
+            boolean exitOnMaxNumEvents = false;
 
-            if (args.containsOption("oo.events")) {
-                events = Long.parseLong(args.getOptionValues("oo.events").get(0));
+            if (args.containsOption("oo.maxNumEvents")) {
+                events = Long.parseLong(args.getOptionValues("oo.maxNumEvents").get(0));
 
                 log.info("limiting number of events to {}", events);
+
+                if (args.containsOption("oo.exitOnMaxNumEvents")) {
+                    exitOnMaxNumEvents = Boolean.parseBoolean(args.getOptionValues("oo.exitOnMaxNumEvents").get(0));
+                }
+
+                if (exitOnMaxNumEvents)
+                {
+                    log.info("will terminate once max events have been reached");
+                }
+                else
+                {
+                    log.info("will continue to run after exceeding max events");
+                }
+            }
+
+            if (args.containsOption("oo.randomSeed")) {
+                long randomSeed = Long.parseLong(args.getOptionValues("oo.randomSeed").get(0));
+
+                log.info("random seed being used is {}", randomSeed);
+                controller.setRandom(new Random(randomSeed));
             }
 
 
             AtomicLong invocationCounter = new AtomicLong(0);
             AtomicLong eventCounter = new AtomicLong(0);
 
-            while (events == -1 || eventCounter.get() < events) {
+            ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-                int randomUserId = ThreadLocalRandom.current().nextInt(1, userCount + 1);
+            while (events == -1 || eventCounter.get() < events) {
+                int randomUserId = controller.getRandom().nextInt(userCount) + 1;
 
                 repository.findById((long) randomUserId).ifPresent(user -> {
-
                     boolean eventGenerated = false;
 
                     try {
-                        eventGenerated = controller.route(invocationCounter.get(), user);
-                    } catch (Exception e) {
+                        if (controller.getRandom().nextBoolean())
+                        {
+                            eventGenerated = executorService.submit(eventCallable1).get();
+                        } else {
+                            eventGenerated = executorService.submit(eventCallable2).get();
+                        }
+                    } catch(Exception e) {
                         log.error("THIS IS A BUG IN THE GENERATOR: " + e.getMessage(), e);
                     } finally {
                         if (eventGenerated) {
                             eventCounter.incrementAndGet();
                         }
                     }
-
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        log.error(e.getMessage(), e);
-                    }
                 });
 
-                invocationCounter.incrementAndGet();
 
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    log.error(e.getMessage(), e);
+                }
+
+                invocationCounter.incrementAndGet();
             }
 
             log.info("event generator finished!!!!  ran {} times and generated {} events.", invocationCounter.get(), eventCounter.get());
 
-            // Terminate the application since max number of events have been reached
-            System.exit(SpringApplication.exit(context));
+            if (exitOnMaxNumEvents)
+            {
+                // Terminate the application since max number of events have been reached
+                System.exit(SpringApplication.exit(context));
+            }
         };
     }
 }

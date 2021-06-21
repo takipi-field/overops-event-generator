@@ -8,9 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
-public class Controller {
+import java.util.Random;
 
+@Component
+public class Controller
+{
     private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
     private final CatchAndProcessService catchAndProcessService;
@@ -31,9 +33,13 @@ public class Controller {
 
     private final XmlParseService xmlParseService;
 
+    private final CaughtExceptionDiffRouteService mommyPackService;
+
+    private Random random = new Random();
+
 
     @Autowired
-    public Controller(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService, XmlParseService xmlParseService) {
+    public Controller(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService, XmlParseService xmlParseService, CaughtExceptionDiffRouteService mommyPackService) {
         this.catchAndProcessService = catchAndProcessService;
         this.catchAndIgnoreService = catchAndIgnoreService;
         this.loggedErrorService = loggedErrorService;
@@ -43,55 +49,56 @@ public class Controller {
         this.uncaughtExceptionService = uncaughtExceptionService;
         this.httpService = httpService;
         this.xmlParseService = xmlParseService;
+        this.mommyPackService = mommyPackService;
     }
 
-    public boolean route(long counter, User user) {
+    public void route(User user) {
 
-        boolean generateEvent = false;
+        EventType event = EventType.randomEvent(random);
 
-        if (counter != 0 && counter % 5 == 0) {
-            generateEvent = true;
-        }
-
-        EventType event = EventType.randomEvent();
-
-        log.trace("for run {}, generate event for type [{}]? {}", counter, event, generateEvent);
+        log.trace("generate event for type [{}]", event);
 
         switch (event) {
 
             case SWALLOWED_EXCEPTION:
-                catchAndIgnoreService.generateEvent(user, generateEvent, event);
+                catchAndIgnoreService.generateEvent(user, event);
                 break;
             case CAUGHT_EXCEPTION:
-                catchAndProcessService.generateEvent(user, generateEvent, event);
+                catchAndProcessService.generateEvent(user, event);
                 break;
             case UNCAUGHT_EXCEPTION:
-                uncaughtExceptionService.generateEvent(user, generateEvent, event);
+                uncaughtExceptionService.generateEvent(user, event);
                 break;
             case LOGGED_WARNING:
-                loggedWarnService.generateEvent(user, generateEvent, event);
+                loggedWarnService.generateEvent(user, event);
                 break;
             case LOGGED_ERROR:
-                loggedErrorService.generateEvent(user, generateEvent, event);
+                loggedErrorService.generateEvent(user, event);
                 break;
             case TIMER:
-                slowService.generateEvent(user, generateEvent, event);
+                slowService.generateEvent(user, event);
                 break;
             case CUSTOM_EVENT:
-                customEventService.generateEvent(user, generateEvent, event);
+                customEventService.generateEvent(user, event);
                 break;
             case HTTP_ERROR:
-                httpService.generateEvent(user, generateEvent, event);
+                httpService.generateEvent(user, event);
                 break;
             case XML_PARSE_EXCEPTION:
-				xmlParseService.generateEvent(user, generateEvent, event);
+				xmlParseService.generateEvent(user, event);
 				break;
+            case CAUGHT_EXCEPTION_DIFF_ROUTE:
+                mommyPackService.generateEvent(user, event);
+                break;
+
         }
-
-
-        return generateEvent;
-
-
     }
 
+    public void setRandom(Random random) {
+        this.random = random;
+    }
+
+    public Random getRandom() {
+        return random;
+    }
 }

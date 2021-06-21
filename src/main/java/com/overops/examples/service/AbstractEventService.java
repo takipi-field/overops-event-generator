@@ -10,15 +10,11 @@ public abstract class AbstractEventService implements EventService {
     final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void generateEvent(User user, boolean generateEvent, EventType eventType) {
+    public void generateEvent(User user, EventType eventType) {
+        log.info("generating [{}] for user {}", eventType, user.toString());
 
-        if (generateEvent) {
-            log.info("generating [{}] for user {}", eventType, user.toString());
-        }
-
-
-        fireEvent(generateEvent);
+        fireEvent();
     }
 
-    abstract void fireEvent(boolean generateEvent);
+    abstract void fireEvent();
 }

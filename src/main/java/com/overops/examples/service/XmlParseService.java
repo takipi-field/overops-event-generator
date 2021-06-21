@@ -19,12 +19,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class XmlParseService extends AbstractEventService {
 
 	@Override
-	void fireEvent(boolean generateEvent) {
-
-		if (!generateEvent) {
-			return;
-		}
-
+	void fireEvent() {
 		try {
 			Random random = new Random();
 			int r = random.nextInt(5) + 1;

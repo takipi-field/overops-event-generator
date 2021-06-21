@@ -33,7 +33,9 @@ nohup java -agentlib:TakipiAgent -jar target/overops-event-generator-*.jar &
 ### Additional Command Line Arguments
 | Argument | Description | Value Type | Default Value |  Example |
 |---|---|---|---|---|
-| `oo.events` | Executes the number events specified and then terminates the application | Integer | -1 (run forever) | `--oo.events=100` |
+| `oo.maxNumEvents` | Executes the number events specified and then terminates the application | Integer | -1 (run forever) | `--oo.maxNumEvents=100` |
+| `oo.exitOnMaxNumEvents` | Determines if the application will exit once max number of events have been reached | Boolean | false | `--oo.exitOnMaxNumEvents=false` |
+| `oo.randomSeed` | Seed value that will be used when randomizing the events to be fired | Long | No Seed | `--oo.randomSeed=123` |
 | `server.port` | Specify http port to use | Integer | 8080 | `--server.port=1234`
 
 ## DB Console

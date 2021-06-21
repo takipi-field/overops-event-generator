@@ -15,13 +15,13 @@ import java.io.IOException;
 public class HttpService extends AbstractEventService {
 
     @Override
-    void fireEvent(boolean generateEvent) {
+    void fireEvent() {
 
         String url = "http://localhost:8080/throwError";
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromUriString(url)
-                .queryParam(RestEndpoint.GENERATE_EVENT, generateEvent);
+                .queryParam(RestEndpoint.GENERATE_EVENT);
 
         try {
             HttpClient client = HttpClientBuilder.create().build();

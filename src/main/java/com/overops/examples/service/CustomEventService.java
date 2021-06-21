@@ -47,11 +47,7 @@ public class CustomEventService extends AbstractEventService {
     }
 
     @Override
-    void fireEvent(boolean generateEvent) {
-
-        if (!generateEvent) {
-            return;
-        }
+    void fireEvent() {
 
         /*
 

@@ -7,12 +7,7 @@ public class LoggedErrorService extends AbstractEventService {
 
 
     @Override
-    void fireEvent(boolean generateEvent) {
-
-        if (!generateEvent) {
-            return;
-        }
-
+    void fireEvent() {
         /*
 
             Error Scenario:
