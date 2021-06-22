@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 APP_OPT=""
 
-# Only set the number of events when Event Generator is not running as a daemon.
-if [[ ${IS_DAEMON} != "true" ]] ; then
+if [[ -n ${MAX_NUM_EVENTS} ]] ; then
     APP_OPT+="--oo.maxNumEvents=${MAX_NUM_EVENTS} "
 fi
 
