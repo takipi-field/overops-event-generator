@@ -10,12 +10,7 @@ public class UncaughtExceptionService extends AbstractEventService {
 
 
     @Override
-    void fireEvent(boolean generateEvent) {
-
-        if (!generateEvent) {
-            return;
-        }
-
+    void fireEvent() {
         Executors.newSingleThreadExecutor(r -> new Thread(r, "uncaught-exception-thread")).execute(() -> {
 
             /*

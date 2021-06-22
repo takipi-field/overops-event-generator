@@ -5,5 +5,5 @@ import com.overops.examples.utils.EventType;
 
 public interface EventService {
 
-    void generateEvent(User user, boolean generateEvent, EventType eventType);
+    void generateEvent(User user, EventType eventType);
 }

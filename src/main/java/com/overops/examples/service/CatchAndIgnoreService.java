@@ -9,11 +9,7 @@ public class CatchAndIgnoreService extends AbstractEventService {
 
     @TakipiInvocationCounter
     @Override
-    void fireEvent(boolean generateEvent) {
-
-        if (!generateEvent) {
-            return;
-        }
+    void fireEvent() {
 
         try {
 

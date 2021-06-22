@@ -33,7 +33,9 @@ nohup java -agentlib:TakipiAgent -jar target/overops-event-generator-*.jar &
 ### Additional Command Line Arguments
 | Argument | Description | Value Type | Default Value |  Example |
 |---|---|---|---|---|
-| `oo.events` | Executes the number events specified and then terminates the application | Integer | -1 (run forever) | `--oo.events=100` |
+| `oo.maxNumEvents` | Executes the number events specified and then terminates the application | Integer | -1 (run forever) | `--oo.maxNumEvents=100` |
+| `oo.exitOnMaxNumEvents` | Determines if the application will exit once max number of events have been reached | Boolean | false | `--oo.exitOnMaxNumEvents=false` |
+| `oo.randomSeed` | Seed value that will be used when randomizing the events to be fired | Long | No Seed | `--oo.randomSeed=123` |
 | `server.port` | Specify http port to use | Integer | 8080 | `--server.port=1234`
 
 ## DB Console
@@ -67,15 +69,22 @@ The Overops Agent can be configured with Environment variables as described in t
 Required is the TAKIPI_COLLECTOR_HOST variable which should be the hostname or IP of the collector
 
 ```console
-$ docker run  --env TAKIPI_COLLECTOR_HOST=<HOSTNAME>  -ti overops-event-generator:latest
+$ docker run -e TAKIPI_COLLECTOR_HOST=<HOSTNAME> -ti overops-event-generator:latest
 ```
 
-By default, the event generator will run indefinitely. To set the "--oo.events" option in the docker container set the following environment variables:
+By default, the event generator will run indefinitely. To set the "--oo.maxNumEvents" and "--oo.exitOnMaxNumEvents" options in the docker container set the following environment variables:
 
 ```console
-$ docker run  --env TAKIPI_COLLECTOR_HOST=<HOSTNAME> --env IS_DAEMON=false --env NUM_OF_EVENTS=10  -ti overops-event-generator:latest
+$ docker run -e TAKIPI_COLLECTOR_HOST=<HOSTNAME> -e NUM_OF_EVENTS=10 -e EXIT_ON_MAX_NUM_EVENTS=true -ti overops-event-generator:latest
 ```
 
+### Additional Run Options
+| Argument | Description | Value Type | Default Value |  Example |
+|---|---|---|---|---|
+| `MAX_NUM_EVENTS` | Executes the number events specified and then terminates the application (-1 no max events) | Integer | -1 | `-e MAX_NUM_EVENTS=100` |
+| `EXIT_ON_MAX_NUM_EVENTS` | Determines if the application will exit once max number of events have been reached | Boolean | false | `-e EXIT_ON_MAX_NUM_EVENTS=true` |
+| `RANDOM_SEED` | Seed value that will be used when randomizing the events to be fired | Long | No Seed | `-e RANDOM_SEED=123` |
+| `JETTY_PORT` | Specify http port to use | Integer | 8080 | `-e JETTY_PORT=1234`
 
 
 ## Pivotal Cloud Foundry (PCF) Example

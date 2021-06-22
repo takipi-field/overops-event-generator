@@ -7,12 +7,7 @@ public class SlowService extends AbstractEventService {
 
 
     @Override
-    void fireEvent(boolean generateEvent) {
-
-        if (!generateEvent) {
-            return;
-        }
-
+    void fireEvent() {
         /*
 
             Timer Scenario:
