@@ -41,6 +41,7 @@ ENV TAKIPI_COLLECTOR_PORT=6060
 ENV JETTY_PORT=8888
 ENV JAVA_TOOL_OPTIONS=-agentpath:/opt/takipi/lib/libTakipiAgent.so=takipi.debug.logconsole
 ENV IS_DAEMON=true
-ENV NUM_OF_EVENTS=100
+ENV MAX_NUM_EVENTS=100
+ENV EXIT_ON_MAX_NUM_EVENTS=true
 
 ENTRYPOINT ["./run.sh" ]
