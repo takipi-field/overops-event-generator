@@ -34,12 +34,16 @@ public class Controller
     private final XmlParseService xmlParseService;
 
     private final CaughtExceptionDiffRouteService mommyPackService;
+    
+    private final CatchInDifferentMethodService catchInDifferentMethodService;
+    
+    private final SwallowInDifferentMethodService swallowInDifferentMethodService;
 
     private Random random = new Random();
 
 
     @Autowired
-    public Controller(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService, XmlParseService xmlParseService, CaughtExceptionDiffRouteService mommyPackService) {
+    public Controller(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService, XmlParseService xmlParseService, CaughtExceptionDiffRouteService mommyPackService, CatchInDifferentMethodService catchInDifferentMethodService, SwallowInDifferentMethodService swallowInDifferentMethodService) {
         this.catchAndProcessService = catchAndProcessService;
         this.catchAndIgnoreService = catchAndIgnoreService;
         this.loggedErrorService = loggedErrorService;
@@ -50,6 +54,8 @@ public class Controller
         this.httpService = httpService;
         this.xmlParseService = xmlParseService;
         this.mommyPackService = mommyPackService;
+        this.catchInDifferentMethodService = catchInDifferentMethodService;
+        this.swallowInDifferentMethodService = swallowInDifferentMethodService;
     }
 
     public void route(User user) {
@@ -89,6 +95,12 @@ public class Controller
 				break;
             case CAUGHT_EXCEPTION_DIFF_ROUTE:
                 mommyPackService.generateEvent(user, event);
+                break;
+            case CATCH_IN_DIFFERENT_METHOD:
+                catchInDifferentMethodService.generateEvent(user, event);
+                break;
+            case SWALLOW_IN_DIFFERENT_METHOD:
+                swallowInDifferentMethodService.generateEvent(user, event);
                 break;
 
         }

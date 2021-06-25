@@ -16,7 +16,9 @@ public enum EventType {
     CUSTOM_EVENT,
     HTTP_ERROR,
     XML_PARSE_EXCEPTION,
-    CAUGHT_EXCEPTION_DIFF_ROUTE;
+    CAUGHT_EXCEPTION_DIFF_ROUTE,
+    CATCH_IN_DIFFERENT_METHOD,
+    SWALLOW_IN_DIFFERENT_METHOD;
 
     private static final List<EventType> EVENT_TYPES = Collections.unmodifiableList(Arrays.asList(values()));
 
