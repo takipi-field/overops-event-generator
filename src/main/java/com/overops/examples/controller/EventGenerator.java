@@ -3,18 +3,12 @@ package com.overops.examples.controller;
 import com.overops.examples.domain.User;
 import com.overops.examples.service.*;
 import com.overops.examples.utils.EventType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
-
 @Component
-public class Controller
+public class EventGenerator
 {
-    private static final Logger log = LoggerFactory.getLogger(Controller.class);
-
     private final CatchAndProcessService catchAndProcessService;
 
     private final CatchAndIgnoreService catchAndIgnoreService;
@@ -39,11 +33,8 @@ public class Controller
     
     private final SwallowInDifferentMethodService swallowInDifferentMethodService;
 
-    private Random random = new Random();
-
-
     @Autowired
-    public Controller(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService, XmlParseService xmlParseService, CaughtExceptionDiffRouteService mommyPackService, CatchInDifferentMethodService catchInDifferentMethodService, SwallowInDifferentMethodService swallowInDifferentMethodService) {
+    public EventGenerator(CatchAndProcessService catchAndProcessService, CatchAndIgnoreService catchAndIgnoreService, LoggedErrorService loggedErrorService, CustomEventService customEventService, SlowService slowService, LoggedWarnService loggedWarnService, UncaughtExceptionService uncaughtExceptionService, HttpService httpService, XmlParseService xmlParseService, CaughtExceptionDiffRouteService mommyPackService, CatchInDifferentMethodService catchInDifferentMethodService, SwallowInDifferentMethodService swallowInDifferentMethodService) {
         this.catchAndProcessService = catchAndProcessService;
         this.catchAndIgnoreService = catchAndIgnoreService;
         this.loggedErrorService = loggedErrorService;
@@ -58,59 +49,46 @@ public class Controller
         this.swallowInDifferentMethodService = swallowInDifferentMethodService;
     }
 
-    public void route(User user) {
-
-        EventType event = EventType.randomEvent(random);
-
-        log.trace("generate event for type [{}]", event);
-
-        switch (event) {
+    public void generateEvent(User user, EventType eventType) {
+        switch (eventType) {
 
             case SWALLOWED_EXCEPTION:
-                catchAndIgnoreService.generateEvent(user, event);
+                catchAndIgnoreService.generateEvent(user, eventType);
                 break;
             case CAUGHT_EXCEPTION:
-                catchAndProcessService.generateEvent(user, event);
+                catchAndProcessService.generateEvent(user, eventType);
                 break;
             case UNCAUGHT_EXCEPTION:
-                uncaughtExceptionService.generateEvent(user, event);
+                uncaughtExceptionService.generateEvent(user, eventType);
                 break;
             case LOGGED_WARNING:
-                loggedWarnService.generateEvent(user, event);
+                loggedWarnService.generateEvent(user, eventType);
                 break;
             case LOGGED_ERROR:
-                loggedErrorService.generateEvent(user, event);
+                loggedErrorService.generateEvent(user, eventType);
                 break;
             case TIMER:
-                slowService.generateEvent(user, event);
+                slowService.generateEvent(user, eventType);
                 break;
             case CUSTOM_EVENT:
-                customEventService.generateEvent(user, event);
+                customEventService.generateEvent(user, eventType);
                 break;
             case HTTP_ERROR:
-                httpService.generateEvent(user, event);
+                httpService.generateEvent(user, eventType);
                 break;
             case XML_PARSE_EXCEPTION:
-				xmlParseService.generateEvent(user, event);
+				xmlParseService.generateEvent(user, eventType);
 				break;
             case CAUGHT_EXCEPTION_DIFF_ROUTE:
-                mommyPackService.generateEvent(user, event);
+                mommyPackService.generateEvent(user, eventType);
                 break;
             case CATCH_IN_DIFFERENT_METHOD:
-                catchInDifferentMethodService.generateEvent(user, event);
+                catchInDifferentMethodService.generateEvent(user, eventType);
                 break;
             case SWALLOW_IN_DIFFERENT_METHOD:
-                swallowInDifferentMethodService.generateEvent(user, event);
+                swallowInDifferentMethodService.generateEvent(user, eventType);
                 break;
 
         }
-    }
-
-    public void setRandom(Random random) {
-        this.random = random;
-    }
-
-    public Random getRandom() {
-        return random;
     }
 }

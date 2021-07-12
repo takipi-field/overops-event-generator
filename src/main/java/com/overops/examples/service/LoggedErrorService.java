@@ -16,7 +16,6 @@ public class LoggedErrorService extends AbstractEventService {
 
         */
 
-
         log.error("log.error() called!");
     }
 }

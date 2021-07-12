@@ -22,7 +22,6 @@ public class CatchAndIgnoreService extends AbstractEventService {
                 like Splunk or other monitoring tools.  Usually a sign of poor code.  Can lead to serious issues.
 
             */
-
             throw new ExampleSwallowedException("Exception occurred but it was never logged, eg. swallowed exception");
 
         } catch (ExampleSwallowedException e) {

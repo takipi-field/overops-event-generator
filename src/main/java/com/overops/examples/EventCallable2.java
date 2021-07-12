@@ -1,12 +1,13 @@
 package com.overops.examples;
 
-import org.springframework.stereotype.Service;
+import com.overops.examples.controller.EventGenerator;
 
-import java.util.concurrent.Callable;
-
-@Service
-public class EventCallable2 extends EventCallable implements Callable<Boolean>
+public class EventCallable2 extends EventCallable
 {
+	EventCallable2(EventGenerator eventGenerator) {
+		super(eventGenerator);
+	}
+
 	@Override
 	public Boolean call() throws Exception
 	{

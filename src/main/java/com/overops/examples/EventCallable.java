@@ -1,42 +1,55 @@
 package com.overops.examples;
 
-import com.overops.examples.controller.Controller;
-import com.overops.examples.domain.UserRepository;
+import com.overops.examples.controller.EventGenerator;
+import com.overops.examples.domain.User;
+import com.overops.examples.utils.EventType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class EventCallable
+public abstract class EventCallable implements Callable<Boolean>
 {
 	private static final Logger log = LoggerFactory.getLogger(EventCallable.class);
 
-	@Autowired
-	private UserRepository userRepository;
+	User user;
+	EventType eventType;
 
-	@Autowired
-	private Controller controller;
+	final private EventGenerator eventGenerator;
+
+	EventCallable(EventGenerator eventGenerator) {
+		this.eventGenerator = eventGenerator;
+	}
 
 	public Boolean createEvent()
 	{
-		int userCount = Math.toIntExact(userRepository.count());
-		int randomUserId = controller.getRandom().nextInt(userCount) + 1;
-
 		AtomicBoolean eventGenerated = new AtomicBoolean(false);
-
-		userRepository.findById((long) randomUserId).ifPresent(user -> {
-			try
-			{
-				controller.route(user);
-				eventGenerated.set(true);
-			}
-			catch (Exception e)
-			{
-				log.error("THIS IS A BUG IN THE GENERATOR: " + e.getMessage(), e);
-			}
-		});
-
+		try
+		{
+			eventGenerator.generateEvent(user, eventType);
+			eventGenerated.set(true);
+		}
+		catch (Exception e)
+		{
+			log.error("THIS IS A BUG IN THE GENERATOR: " + e.getMessage(), e);
+		}
 		return eventGenerated.get();
+	}
+
+	public void setTarget(User user, EventType eventType) {
+		this.user = user;
+		this.eventType = eventType;
+	}
+
+	public EventType getEventType() {
+		return eventType;
+	}
+
+	@Override
+	public Boolean call() throws Exception
+	{
+		return createEvent();
 	}
 }
