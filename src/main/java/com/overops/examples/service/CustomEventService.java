@@ -58,7 +58,7 @@ public class CustomEventService extends AbstractEventService {
          */
 
         TakipiEvent customEvent = takipi.events().createEvent("Custom OverOps Event");
-
+        
         customEvent.fire();
 
         if (takipiContext != null) {

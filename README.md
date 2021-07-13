@@ -33,10 +33,12 @@ nohup java -agentlib:TakipiAgent -jar target/overops-event-generator-*.jar &
 ### Additional Command Line Arguments
 | Argument | Description | Value Type | Default Value |  Example |
 |---|---|---|---|---|
-| `oo.maxNumEvents` | Executes the number events specified and then terminates the application | Integer | -1 (run forever) | `--oo.maxNumEvents=100` |
-| `oo.exitOnMaxNumEvents` | Determines if the application will exit once max number of events have been reached | Boolean | false | `--oo.exitOnMaxNumEvents=false` |
-| `oo.randomSeed` | Seed value that will be used when randomizing the events to be fired | Long | No Seed | `--oo.randomSeed=123` |
+| `oo.eventGenId` | Identify the event list to be generated | String | RANDOM_EVENTS | `--oo.eventGenId=MOMMY_PACKS`
+| `oo.maxNumEvents` | Executes the number events specified and then terminates the application. Ignored if oo.eventGenId not equal to RANDOM_EVENTS | Integer | -1 (run forever) | `--oo.maxNumEvents=100` |
+| `oo.exitOnMaxNumEvents` | Determines if the application will exit once max number of events have been reached. Ignored if oo.eventGenId not equal to RANDOM_EVENTS | Boolean | false | `--oo.exitOnMaxNumEvents=false` |
+| `oo.randomSeed` | Seed value that will be used when randomizing the events to be fired. Ignored if oo.eventGenId not equal to RANDOM_EVENTS | Long | No Seed | `--oo.randomSeed=123` |
 | `server.port` | Specify http port to use | Integer | 8080 | `--server.port=1234`
+
 
 ## DB Console
 You can view the H2 web console at `/console` for example `http://localhost:8080/console`.  Use the following connection properties:
