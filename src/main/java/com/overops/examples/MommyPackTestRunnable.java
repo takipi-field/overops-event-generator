@@ -44,6 +44,9 @@ class MommyPackTestRunnable extends AbstractEventsRunnable {
         generateEvent(user, EventType.CATCH_IN_DIFFERENT_METHOD, eventCallable2);
         generateEvent(user, EventType.CATCH_IN_DIFFERENT_METHOD, eventCallable2);
         generateEvent(user, EventType.CATCH_IN_DIFFERENT_METHOD, eventCallable2);
+
+        // The event below should not be under a mommy pack.
+        generateEvent(user, EventType.UNCAUGHT_EXCEPTION, eventCallable1);
     };
     
 }
