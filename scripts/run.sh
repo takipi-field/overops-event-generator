@@ -18,4 +18,4 @@ if [[ -n ${EVENT_GEN_ID} ]] ; then
 fi
 
 
-java -jar /opt/takipi/overops-event-generator-*.jar --server.port=${JETTY_PORT} ${APP_OPT}
+java -jar /opt/harness/et-event-generator.jar --server.port=${JETTY_PORT} ${APP_OPT}
