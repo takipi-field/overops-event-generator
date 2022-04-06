@@ -16,7 +16,7 @@ cpuRequest: 250m
 
 agentSidecar:
   enabled: true
-  image: <+artifact.sidecars.etagent.image>
+  image: <+artifacts.sidecars.etagent.image>
   pullPolicy: Always
 
 env:
