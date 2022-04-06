@@ -23,6 +23,16 @@ spec:
       - name: {{.Values.name}}-dockercfg
       {{- end}}
 
+      {{- if .Values.agentSidecar.enabled }}
+      initContainers:
+        - name: et-agent-sidecar
+          image: {{.Values.agentSidecar.image}}
+          imagePullPolicy: {{ .Values.agentSidecar.pullPolicy }}
+          volumeMounts:
+          - name: et-agent
+            mountPath: /opt/harness-et-agent
+      {{- end }}
+
       containers:
       - name: {{.Values.name}}
         {{- if or .Values.env.config .Values.env.secrets}}
@@ -36,6 +46,13 @@ spec:
             name: {{.Values.name}}
         {{- end}}
         {{- end}}
+
+        {{- if .Values.agentSidecar.enabled}}
+        env:
+          - name: JAVA_TOOL_OPTIONS
+            value: "-agentpath:/opt/harness-et-agent/harness/lib/libETAgent.so=debug.logconsole"
+        {{- end}}
+
         image: {{.Values.image}}
         imagePullPolicy: {{.Values.imagePullPolicy}}
 
@@ -47,4 +64,14 @@ spec:
             memory: {{.Values.memRequest | quote}}
             cpu: {{.Values.cpuRequest | quote}}
 
+        {{- if .Values.agentSidecar.enabled }}
+        volumeMounts:
+          - name: et-agent
+            mountPath: /opt/harness-et-agent
+        {{- end }}
 
+      {{- if .Values.agentSidecar.enabled }}
+      volumes:
+        - name: et-agent
+          emptyDir: {}
+      {{- end }}

@@ -17,7 +17,9 @@ maxSurge: 100%
 maxUnavailable: 0
 
 agentSidecar:
-  enabled: false
+  enabled: true
+  image: harness/et-agent-sidecar:5.0.0
+  pullPolicy: Always
 
 env:
   config:

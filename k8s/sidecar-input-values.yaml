@@ -17,7 +17,9 @@ maxSurge: 100%
 maxUnavailable: 0
 
 agentSidecar:
-  enabled: false
+  enabled: true
+  image: <+artifacts.sidecars.etagent.image>
+  pullPolicy: Always
 
 env:
   config:
