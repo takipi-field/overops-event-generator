@@ -13,11 +13,11 @@ memLimit: 1Gi
 memRequest: 500Mi
 cpuLimit: 1
 cpuRequest: 250m
-maxSurge: 100%
-maxUnavailable: 0
 
 agentSidecar:
-  enabled: false
+  enabled: true
+  image: <+artifact.sidecars.etagent.image>
+  pullPolicy: Always
 
 env:
   config:
