@@ -2,8 +2,8 @@ FROM openjdk:8-jdk-slim as BUILDER
 
 LABEL maintainer="support@harness.io"
 
+ARG AGENT_URL=https://get.et.harness.io/releases/latest/nix/harness-et-agent.tar.gz
 WORKDIR /et-event-generator
-ARG AGENT_FILENAME=harness.tar.gz
 
 # install curl
 RUN apt-get update && apt-get -y install curl
@@ -12,11 +12,10 @@ RUN apt-get update && apt-get -y install curl
 COPY .mvn ./.mvn
 COPY src ./src
 COPY mvnw mvnw.cmd pom.xml ./
-COPY ${AGENT_FILENAME} ./
 
 RUN ./mvnw clean package -DskipTests
 
-RUN tar -xvzf ./${AGENT_FILENAME}
+RUN curl -sL ${AGENT_URL} | tar -xvzf -
 
 
 FROM openjdk:8-jre-slim

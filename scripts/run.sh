@@ -5,6 +5,10 @@ if [[ -n ${MAX_NUM_EVENTS} ]] ; then
     APP_OPT+="--oo.maxNumEvents=${MAX_NUM_EVENTS} "
 fi
 
+if [[ -n ${TEST} ]] ; then
+    APP_OPT+="--oo.test=${TEST} "
+fi
+
 if [[ -n ${RANDOM_SEED} ]] ; then
 	APP_OPT+="--oo.randomSeed=${RANDOM_SEED} "
 fi

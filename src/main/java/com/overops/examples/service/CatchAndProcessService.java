@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class CatchAndProcessService extends AbstractEventService {
 
     @Override
-    void fireEvent() {
+    public void fireEvent() {
         try {
             throw new ExampleCaughtException("this exception is thrown in one method and expected to be handled in another.");
         } catch (ExampleCaughtException e) {

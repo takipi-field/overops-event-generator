@@ -3,10 +3,14 @@ package com.overops.examples;
 import com.overops.examples.controller.EventGenerator;
 import com.overops.examples.domain.User;
 import com.overops.examples.domain.UserRepository;
+import com.overops.examples.service.CatchAndProcessService;
+import com.overops.examples.service.LoggedErrorService;
+import com.overops.examples.service.LoggedWarnService;
 import com.takipi.sdk.v1.api.Takipi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +21,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 public class OverOpsEventGeneratorApplication {
@@ -81,34 +86,67 @@ public class OverOpsEventGeneratorApplication {
             } catch (InterruptedException e) {
                 log.error(e.getMessage(), e);
             }
-    
+
             log.info("waking up and ready to generate errors");
-    
-            String eventGenId = args.containsOption("oo.eventGenId") ? args.getOptionValues("oo.eventGenId").get(0) : "RANDOM_EVENTS";
-            switch (eventGenId) {
-                case "MOMMY_PACKS":
-                    Runnable mommyPackTest = new MommyPackTestRunnable(eventGenerator, repository.findAll().iterator().next());
-                    mommyPackTest.run();
-                    break;
-                default: 
-                    Long numEvents = args.containsOption("oo.maxNumEvents") ? Long.parseLong(args.getOptionValues("oo.maxNumEvents").get(0)) : null;
-                    boolean exitOnMaxNumEvents = ((args.containsOption("oo.maxNumEvents") && args.containsOption("oo.exitOnMaxNumEvents")) ? Boolean.parseBoolean(args.getOptionValues("oo.exitOnMaxNumEvents").get(0)) : false);
-                    Long randomSeed = args.containsOption("oo.randomSeed") ? Long.parseLong(args.getOptionValues("oo.randomSeed").get(0)) : null;
-
-                    if (randomSeed != null) {
-                        log.info("random seed being used is {}", randomSeed);
-                    }
-
-                    Runnable randomEventsRunner = new RandomEventsRunnable(eventGenerator, repository, randomSeed, numEvents);
-                    randomEventsRunner.run();
- 
-                    if (exitOnMaxNumEvents)
-                    {
-                        System.exit(SpringApplication.exit(context));
-                    }
-                    break;
+            if (!generateIntegrationTestEvents(args)) {
+                generateRandomEvents(args, repository);
             }
         };
+    }
+
+    /**
+     * Generate Integration Test Events
+     *
+     * @return true if integration test events were generated
+     */
+    private boolean generateIntegrationTestEvents(ApplicationArguments args) {
+        final List<String> testArgValues = args.getOptionValues("oo.test");
+        if (testArgValues != null) {
+            for (String argValue : testArgValues) {
+                if ("true".equals(argValue)) {
+                    System.out.println("Test option value is true");
+                    // generate events for test 1
+                    CatchAndProcessService methodA = new CatchAndProcessService();
+                    methodA.fireEvent();
+
+                    // generate events for test 2
+                    LoggedErrorService methodB = new LoggedErrorService();
+                    methodB.fireEvent();
+
+                    // generate events for test 3
+                    LoggedWarnService methodC = new LoggedWarnService();
+                    methodC.fireEvent();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void generateRandomEvents(ApplicationArguments args, UserRepository repository) {
+        String eventGenId = args.containsOption("oo.eventGenId") ? args.getOptionValues("oo.eventGenId").get(0) : "RANDOM_EVENTS";
+        switch (eventGenId) {
+            case "MOMMY_PACKS":
+                Runnable mommyPackTest = new MommyPackTestRunnable(eventGenerator, repository.findAll().iterator().next());
+                mommyPackTest.run();
+                break;
+            default:
+                Long numEvents = args.containsOption("oo.maxNumEvents") ? Long.parseLong(args.getOptionValues("oo.maxNumEvents").get(0)) : null;
+                boolean exitOnMaxNumEvents = ((args.containsOption("oo.maxNumEvents") && args.containsOption("oo.exitOnMaxNumEvents")) ? Boolean.parseBoolean(args.getOptionValues("oo.exitOnMaxNumEvents").get(0)) : false);
+                Long randomSeed = args.containsOption("oo.randomSeed") ? Long.parseLong(args.getOptionValues("oo.randomSeed").get(0)) : null;
+
+                if (randomSeed != null) {
+                    log.info("random seed being used is {}", randomSeed);
+                }
+
+                Runnable randomEventsRunner = new RandomEventsRunnable(eventGenerator, repository, randomSeed, numEvents);
+                randomEventsRunner.run();
+
+                if (exitOnMaxNumEvents) {
+                    System.exit(SpringApplication.exit(context));
+                }
+                break;
+        }
     }
 
 }

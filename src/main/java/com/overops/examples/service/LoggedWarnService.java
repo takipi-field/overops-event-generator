@@ -12,7 +12,7 @@ public class LoggedWarnService extends AbstractEventService {
 
     @TakipiAverageExecutionTime
     @Override
-    void fireEvent() {
+    public void fireEvent() {
          /*
 
             Warn Scenario:
