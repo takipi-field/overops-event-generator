@@ -1,0 +1,30 @@
+name: et-event-generator
+namespace:
+  name: <+infra.namespace>
+  annotated: false
+
+istioInjectionEnabled: false
+dockercfg: <+artifact.imagePullSecret>
+image: <+artifact.image>
+imagePullPolicy: Always
+replicas: 1
+
+memLimit: 1Gi
+memRequest: 500Mi
+cpuLimit: 1
+cpuRequest: 250m
+maxSurge: 100%
+maxUnavailable: 0
+
+agentSidecar:
+  enabled: false
+
+env:
+  config:
+    ET_COLLECTOR_URL: <+serviceVariables.COLLECTOR_URL>
+    ET_PROJECT_ID: <+project.identifier>
+    ET_ACCOUNT_ID: <+account.identifier>
+    ET_ORG_ID: <+org.identifier>
+    ET_APPLICATION_NAME: <+service.identifier>
+    ET_DEPLOYMENT_NAME: <+pipeline.sequenceId>
+    ET_ENV_ID: <+env.identifier>
