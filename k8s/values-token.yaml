@@ -21,8 +21,8 @@ agentSidecar:
 
 env:
   config:
-    ET_COLLECTOR_URL: <+serviceConfig.serviceDefinition.spec.variables.COLLECTOR_URL>
-    ET_TOKEN: <+serviceConfig.serviceDefinition.spec.variables.ET_TOKEN>
+    ET_COLLECTOR_URL: <+serviceVariables.COLLECTOR_URL>
+    ET_TOKEN: <+serviceVariables.ET_TOKEN>
     ET_APPLICATION_NAME: <+service.identifier>
     ET_DEPLOYMENT_NAME: <+pipeline.sequenceId>
     ET_ENV_ID: <+env.identifier>
