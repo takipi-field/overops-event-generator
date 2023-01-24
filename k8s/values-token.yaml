@@ -1,4 +1,4 @@
-name: et-event-generator
+name: <+service.identifier>
 namespace:
   name: <+infra.namespace>
   annotated: false
