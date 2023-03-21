@@ -23,6 +23,9 @@ env:
   config:
     ET_COLLECTOR_URL: <+serviceVariables.COLLECTOR_URL>
     ET_TOKEN: <+serviceVariables.ET_TOKEN>
+    ET_REPOSITORY_CONNECTOR_ID: <+serviceVariables.ET_REPOSITORY_CONNECTOR_ID>
+    ET_REPOSITORY_REF: <+serviceVariables.ET_REPOSITORY_REF>
+    ET_REPOSITORY_SOURCES_ROOT: <+serviceVariables.ET_REPOSITORY_SOURCES_ROOT>
     ET_APPLICATION_NAME: <+service.identifier>
     ET_DEPLOYMENT_NAME: <+pipeline.sequenceId>
     ET_ENV_ID: <+env.identifier>
